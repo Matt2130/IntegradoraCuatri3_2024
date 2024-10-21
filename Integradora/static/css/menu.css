@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+header {
+    background-color: #BFBFBF;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1%;
+}
+header label {
+    width: 2rem;
+    height: 2rem;
+    padding: 1rem;
+    width: 10%;
+    height: auto;
+    display: none;
+}
+header label:hover {
+    cursor: pointer;
+}
+nav {
+    display: flex;
+    justify-content: right;
+    width: auto;
+    height: auto;
+}
+nav ul {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin-right: 10%;
+    align-items: center;
+    white-space: nowrap;
+}
+nav li {
+    text-align: center;
+    margin-left: 2%;
+}
+header input[type="checkbox"] {
+    display: none;
+}
+
+/*Coso de los enlaces*/
+nav li a {
+    text-decoration: none;
+    display: block;
+    position: relative;
+    color: black;
+    padding-bottom: 0.125rem;
+    margin-right: 3vw;
+}
+nav li a::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #18272F;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+nav li a:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+nav button {
+    width: auto;
+    height: auto;
+    padding: 1%;
+    border-radius: 5%;
+    border: none;
+    padding: 0.5rem 0.5rem;
+    color: black;
+    display: inline-flex;
+    margin-right: 4%;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+nav button:hover {
+    transform: scale(1.1);
+}
+
+nav button:active {
+    transform: scale(0.9);
+}
+
+header #iniciar {
+    color: black;
+    background-color: #FFCFCF;
+}
+header #registrarse {
+    color: white;
+    background-color: black;
+}
+header #logo{
+    width: auto;
+    height: 3.5vW;
+}
+header #iconmenu{
+    width: auto;
+    height: 5vW;
+}
+@media screen and (max-width: 768px) {
+    header #logo{
+        width: auto;
+        height: 10vW;
+        padding: 2vw;
+    }
+    header #iconmenu{
+        width: auto;
+        height: 10vW;
+        margin-right: 10%;
+    }
+    header label {
+        display: block;
+    }
+    nav {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        /*
+        transition: transform 0.5s ease;
+        */
+        z-index: 10;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(-100%);
+        background-color: #BFBFBF;
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-right: 0%;
+    }
+
+    nav button {
+        margin-right: 0%;
+        margin-bottom: 2%;
+    }
+
+    nav li a {
+        margin-right: 0vw;
+        margin-bottom: 2vw;
+        font-size: 3vw;
+    }
+
+    header label {
+        padding: 0rem;
+        z-index: 20;
+    }
+
+    #btn-menu:checked ~ nav {
+        transform: translateX(0);
+    }
+    #btn-menu:checked ~ header img{
+        display: none;
+    }
+}

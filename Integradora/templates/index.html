@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Horizontal con CSS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
+</head>
+<body>
+    <header id="header">
+        <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="logo" id="logo">
+
+        <input type="checkbox" id="btn-menu"> <!-- Checkbox visible, no se muestra en la navegación -->
+        <label for="btn-menu">
+            <img src="{{ url_for('static', filename='image/options.svg') }}" alt="menu" id="iconmenu">
+        </label>
+
+        <nav id="menu">
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+            <button id="iniciar">Iniciar seción</button>
+            <button id="registrarse">Registrarse</button>
+        </nav>
+    </header>
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <main>
+        <section id="inicio"></section>
+        <section id="vision_mision"></section>
+        <section id="acercadenosotros"></section>
+        <section id="ubicacion"></section>
+    </main>
+
+    <footer>
+        <div id="menu">
+            <p>
+                Menu
+            </p>
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+        </div>
+        <div id="contactos">
+            
+        </div>
+        <div id="derechos_reservados">
+            <div>
+                <img src="{{ url_for('static', filename='image/LOGO.png') }}" alt="logo" id="logo">
+                <p>
+                    ®Blancos y confecciones de durango S.A. de C.V.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

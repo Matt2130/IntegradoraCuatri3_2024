@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*Parte de la derecha*/
+footer{
+    width: 100%;
+    background-color: #A1A7BC;
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+    flex-wrap: wrap;
+}
+footer div{
+    flex: 1;
+    padding: 1%;
+    width: 30%;
+}
+footer img{
+    width: auto;
+    height: 6.5vW;
+}
+footer #derechos_reservados{
+    text-align: right;
+}
+footer #derechos_reservados div{
+    width: 35%;
+    height: auto;
+    margin-left: auto;
+    margin-right: 5%;
+    text-align: center;
+}
+/*Parte de la izquierda*/
+footer ul {
+    list-style: none;
+}
+footer li {
+    margin: 1rem 0;
+}
+footer a {
+    text-decoration: none; 
+    color: black;
+    padding-left: 1rem;
+}
+footer #menu p{
+    font-weight: bold;
+}
+/*Coso del menu*/
+footer li a {
+    text-decoration: none;
+    display: block;
+    position: relative;
+    color: black;
+    padding-bottom: 0.125rem;
+    margin-right: 3vw;
+}
+footer li a::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #18272F;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+footer li a:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+}
+/* telefonos */
+@media screen and (max-width: 768px) {
+    footer {
+        flex-direction: column;
+    }
+    
+    footer div {
+        width: 100%;
+        text-align: center;
+    }
+    footer #derechos_reservados div{
+        margin: auto;
+    }
+    footer #derechos_reservados div img{
+        height: 15vW;
+        width: auto;
+    }
+}
+
+/* Tablets */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    footer #menu{
+        flex: 1;
+        box-sizing: border-box;
+    }
+    footer #contactos{
+        flex: 1;
+        box-sizing: border-box;
+    }
+    footer #derechos_reservados{
+        flex-basis: 100%;
+        text-align: center;
+        align-content: center;
+    }
+    footer #derechos_reservados div{
+        margin: auto;
+    }
+    footer img{
+        width: auto;
+        height: 10.5vW;
+    }
+
+}
