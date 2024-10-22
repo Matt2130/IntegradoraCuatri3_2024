@@ -7,7 +7,9 @@
     <title>Menú Horizontal con CSS</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </head>
 <body>
     <header id="header">
@@ -30,13 +32,32 @@
         </nav>
     </header>
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
     <main>
-        <section id="inicio"></section>
-        <section id="vision_mision"></section>
-        <section id="acercadenosotros"></section>
-        <section id="ubicacion"></section>
+        <section id="inicio">
+            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="menu" id="iconmenu">
+            <br>
+            <button>Ver Productos/Saber más (mandar abajo)</button>
+        </section>
+        <section id="vision_mision">
+            <div id="texto1"></div>
+            <div id="image"></div>
+        </section>
+        <section id="acercadenosotros">
+            <div id="image">
+                <img src="{{ url_for('static', filename='image/group.png') }}" alt="Equipo de trabajo">
+            </div>
+            <div id="texto2"></div>
+        </section>
+        <section id="ubicacion">
+            <h2>Ubicacion</h2>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3643.7977966321264!2d-104.63266229999999!3d24.038194599999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x869bb7b83ae34c4d%3A0x9033e1c23eee3137!2sBlancos%20Y%20Confecciones%20De%20Durango!5e0!3m2!1ses!2smx!4v1729608747730!5m2!1ses!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="ubicacion-text">
+                <img src="{{ url_for('static', filename='image/location.png') }}" alt="">
+                <h3>
+                    Blvd. Francisco Villa #746. Durango, Dgo.
+                </h3>
+            </div>
+        </section>
     </main>
 
     <footer>
