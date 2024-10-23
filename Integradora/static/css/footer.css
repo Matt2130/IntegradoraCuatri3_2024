@@ -34,6 +34,7 @@ footer #derechos_reservados div{
 /*Parte de la izquierda*/
 footer ul {
     list-style: none;
+    z-index: -10;
 }
 footer li {
     margin: 1rem 0;
@@ -50,7 +51,7 @@ footer #menu p{
 footer li a {
     text-decoration: none;
     display: block;
-    position: relative;
+
     color: black;
     padding-bottom: 0.125rem;
     margin-right: 3vw;
@@ -72,6 +73,34 @@ footer li a:hover::before {
     transform-origin: left;
     transform: scaleX(1);
 }
+
+/*Redes sociales*/
+.elementos{
+    display: inline-block;
+    width: auto;
+    height: auto; 
+}
+.elementos img{
+    width: 2vw;
+    height: auto;
+}
+.contacto_contenedor{
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+.elementos a:hover {
+    transform: scale(1.1);
+}
+
+.elementos img {
+    transition: filter 0.3s ease;
+}
+
+.elementos a:hover img {
+    filter: brightness(0) saturate(100%) invert(38%) hue-rotate(200deg);
+}
+
 /* telefonos */
 @media screen and (max-width: 768px) {
     footer {
@@ -89,8 +118,12 @@ footer li a:hover::before {
         height: 15vW;
         width: auto;
     }
+    .elementos img{
+        width: 4vw;
+        height: auto;
+    }
 }
-
+ 
 /* Tablets */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
     footer #menu{
@@ -112,6 +145,10 @@ footer li a:hover::before {
     footer img{
         width: auto;
         height: 10.5vW;
+    }
+    .elementos img{
+        width: 3vw;
+        height: auto;
     }
 
 }
