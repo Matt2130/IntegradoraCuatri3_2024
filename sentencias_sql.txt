@@ -1,3 +1,3 @@
 SELECT contacts.Facebook, contacts.Instagram, contacts.Tik_tok, contacts.Email, contacts.Twitter, contacts.Whatsapp, contacts.Phone FROM contacts;
-SELECT content.Title, content.Describe FROM content WHERE content.Title!="Valores" AND content.Title!="Derechos";
-SELECT content.Title, content.Describe FROM content WHERE content.Title="Valores" OR content.Title="Derechos";
+SELECT content.Title, content.Describe FROM content WHERE content.Title!="Valores" AND content.Title!="Mision" AND content.Title!="Vision";
+SELECT content.Title, content.Describe FROM content WHERE content.Title="Valores" OR content.Title="Misión" OR content.Title="Visión";

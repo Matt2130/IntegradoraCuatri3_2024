@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/registro.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
     <title>Sesion Usuario</title>
 </head>
@@ -12,8 +12,8 @@
         <input type="checkbox" id="chk" aria-hidden="true">
         <div class="signup">
             <form action="">
-                <a id="atras" href=""><img src="../static/image/arrow_back.png" alt=""></a>
-                <img src="../static/image/logo_sin_letras.png" alt="" id="logo">
+                <a id="atras" href=""><img src="{{ url_for('static', filename='image/arrow_back.png') }}" alt="Regreso"></a>
+                <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="Logo" id="logo">
                 <label for="chk" aria-hidden="true">Sign up</label>
                 <input type="text" id="name" placeholder="Name" required="">
                 <input type="text" id="lastname" placeholder="Lastname" required="">
