@@ -1,7 +1,12 @@
-from flask import Flask, render_template, Response
+from flask import Flask, make_response, redirect, url_for, render_template, session, request, jsonify, Response
 from sqlalchemy import create_engine, text
+#Se eliminara pero es para hacer pruebas
+import time
 
 app = Flask(__name__)
+
+# Establecer la clave secreta
+app.secret_key = '12345'  # Cambia esto por una clave única
 
 #Conexión
 engine = None
@@ -133,14 +138,124 @@ def tabla_productos():
     except:
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/registro_usuario', methods=['POST'])
+def signup():
+    init_db()
+
+    data = request.get_json()
+    name = data.get('name')
+    lastname = data.get('lastname')
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    surname = data.get('surname')
+
+    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                INSERT INTO users (User, Password, Email, Name, Surname, Lastname, Rol)
+                VALUES (:username, :password, :email, :name, :surname, :lastname, 'cliente')
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "username": username,
+                "password": password,
+                "email": email,
+                "name": name,
+                "surname": surname,
+                "lastname": lastname
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Registro exitoso"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
+
+@app.route('/login', methods=['POST'])
+def login():
+    init_db()
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    print(email)
+    print(password)
+    time.sleep(3)
+    try:
+        with engine.connect() as connection:
+            sql_query = """
+            SELECT users.Rol FROM users WHERE users.Password=:password AND users.Email=:email;
+            """
+            result = connection.execute(text(sql_query), {
+                "email": email,
+                "password": password
+            }).fetchone()
+            
+            print(result)
+            
+            if result:
+                rol = result[0]
+                # Almacena la información del usuario en la sesión
+                session['email'] = email
+                session['rol'] = rol
+                
+                print(rol)
+                
+                # Redirige según el rol
+                if rol == 'administrador':
+                    print(1)
+                    return jsonify({"redirect": "/administrador_productos"})
+                elif rol == 'cliente':
+                    print(2)
+                    return jsonify({"redirect": "/cliente"})
+                else:
+                    print(3)
+                    return jsonify({"message": "Rol no reconocido"})
+            else:
+                print(4)
+                return jsonify({"message": "Usuario o contraseña incorrectos"})
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"message": "Error en el servidor"}), 500
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    
+    # Redirigir a la página de inicio o a donde desees
+    return jsonify({"redirect": "/"}) # Redirige a la página principal
+
 #Direccionamientos
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/administrador')
-def administrador():
+@app.route('/administrador_productos')
+def administrador_productos():
+    if 'email' not in session:  # Verifica si el usuario está logueado
+        return redirect(url_for('/'))
+    response = make_response(render_template('administracion.html'))
+    response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion.html')
+
+@app.route('/cliente')
+def cliente():
+    return render_template('index.html')
 
 @app.route('/inicio_usuario')
 def inicio_usuario():
