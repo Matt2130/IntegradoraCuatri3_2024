@@ -429,42 +429,42 @@ def home():
 
 @app.route('/administrador_productos')
 def administrador_productos():
-    if 'email' not in session:  # Verifica si el usuario está logueado
-        return redirect(url_for('/'))
-    response = make_response(render_template('administracion.html'))
-    response.headers['Cache-Control'] = 'no-store'
+    #if 'email' not in session:  # Verifica si el usuario está logueado
+    #    return redirect(url_for('/'))
+    #response = make_response(render_template('administracion.html'))
+    #response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion.html')
 
 @app.route('/administrador_season')
 def administrador_season():
-    if 'email' not in session:  # Verifica si el usuario está logueado
-        return redirect(url_for('/'))
-    response = make_response(render_template('administracion.html'))
-    response.headers['Cache-Control'] = 'no-store'
+    #if 'email' not in session:  # Verifica si el usuario está logueado
+    #    return redirect(url_for('/'))
+    #response = make_response(render_template('administracion.html'))
+    #response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion_season.html')
 
 @app.route('/administrador_contact')
 def administrador_contact():
-    if 'email' not in session:  # Verifica si el usuario está logueado
-        return redirect(url_for('/'))
-    response = make_response(render_template('administracion.html'))
-    response.headers['Cache-Control'] = 'no-store'
+    #if 'email' not in session:  # Verifica si el usuario está logueado
+    #    return redirect(url_for('/'))
+    #response = make_response(render_template('administracion.html'))
+    #response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion_contactos.html')
 
 @app.route('/administrador_content')
 def administrador_content():
-    if 'email' not in session:  # Verifica si el usuario está logueado
-        return redirect(url_for('/'))
-    response = make_response(render_template('administracion.html'))
-    response.headers['Cache-Control'] = 'no-store'
+    #if 'email' not in session:  # Verifica si el usuario está logueado
+    #    return redirect(url_for('/'))
+    #response = make_response(render_template('administracion.html'))
+    #response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion_content.html')
 
 @app.route('/administrador_user')
 def administrador_user():
-    if 'email' not in session:  # Verifica si el usuario está logueado
-        return redirect(url_for('/'))
-    response = make_response(render_template('administracion.html'))
-    response.headers['Cache-Control'] = 'no-store'
+    #if 'email' not in session:  # Verifica si el usuario está logueado
+    #    return redirect(url_for('/'))
+    #response = make_response(render_template('administracion.html'))
+    #response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion_users.html')
 
 @app.route('/cliente')
