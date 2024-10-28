@@ -47,9 +47,10 @@
 #vision_mision{
     width: 100%;
     height: auto;
-    background-image: white;
+    background-color: black;
     display: flex;
     height: 100vh;
+    color: white;
 }
 #vision_mision #image{
     width: 30%;

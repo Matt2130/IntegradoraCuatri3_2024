@@ -138,6 +138,188 @@ def tabla_productos():
     except:
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/api/tabla_season_specification')
+def tabla_season_specification	():
+    try:
+        init_db()
+        with engine.connect() as connection:
+            result = connection.execute(text('SELECT season_specification.season, season_specification.Id_season FROM season_specification;'))
+            contenido = result.fetchall()
+            
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temporada</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[1]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[1]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
+@app.route('/api/tabla_contact')
+def tabla_contact():
+    try:
+        init_db()
+        with engine.connect() as connection:
+            result = connection.execute(text('SELECT contacts.Facebook, contacts.Instagram, contacts.Tik_tok, contacts.Email, contacts.Twitter, contacts.Whatsapp, contacts.Phone, contacts.Id_contact FROM contacts;'))
+            contenido = result.fetchall()
+            
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Facebook</th>
+                        <th>Instagram</th>
+                        <th>Tik_tok</th>
+                        <th>Email</th>
+                        <th>Twitter</th>
+                        <th>Whatsapp</th>
+                        <th>Telefono</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>{info[1]}</td>
+                        <td>{info[2]}</td>
+                        <td>{info[3]}</td>
+                        <td>{info[4]}</td>
+                        <td>{info[5]}</td>
+                        <td>{info[6]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[7]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[7]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
+@app.route('/api/tabla_content')
+def tabla_content():
+    try:
+        init_db()
+        with engine.connect() as connection:
+            result = connection.execute(text('SELECT content.Title, content.Describe, content.Id_contenido FROM content;'))
+            contenido = result.fetchall()
+            
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Descripción</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>{info[1]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
+@app.route('/api/tabla_users')
+def tabla_users():
+    try:
+        init_db()
+        with engine.connect() as connection:
+            result = connection.execute(text('SELECT users.User, users.Password, users.Email, users.Name, users.Surname, users.Lastname, users.Rol, users.Id_user FROM users;'))
+            contenido = result.fetchall()
+            
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Contraseña</th>
+                        <th>Correo</th>
+                        <th>Nombre</th>
+                        <th>Apellido paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Rol</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>{info[1]}</td>
+                        <td>{info[2]}</td>
+                        <td>{info[3]}</td>
+                        <td>{info[4]}</td>
+                        <td>{info[5]}</td>
+                        <td>{info[6]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[7]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[7]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
 @app.route('/registro_usuario', methods=['POST'])
 def signup():
     init_db()
@@ -252,6 +434,38 @@ def administrador_productos():
     response = make_response(render_template('administracion.html'))
     response.headers['Cache-Control'] = 'no-store'
     return render_template('administracion.html')
+
+@app.route('/administrador_season')
+def administrador_season():
+    if 'email' not in session:  # Verifica si el usuario está logueado
+        return redirect(url_for('/'))
+    response = make_response(render_template('administracion.html'))
+    response.headers['Cache-Control'] = 'no-store'
+    return render_template('administracion_season.html')
+
+@app.route('/administrador_contact')
+def administrador_contact():
+    if 'email' not in session:  # Verifica si el usuario está logueado
+        return redirect(url_for('/'))
+    response = make_response(render_template('administracion.html'))
+    response.headers['Cache-Control'] = 'no-store'
+    return render_template('administracion_contactos.html')
+
+@app.route('/administrador_content')
+def administrador_content():
+    if 'email' not in session:  # Verifica si el usuario está logueado
+        return redirect(url_for('/'))
+    response = make_response(render_template('administracion.html'))
+    response.headers['Cache-Control'] = 'no-store'
+    return render_template('administracion_content.html')
+
+@app.route('/administrador_user')
+def administrador_user():
+    if 'email' not in session:  # Verifica si el usuario está logueado
+        return redirect(url_for('/'))
+    response = make_response(render_template('administracion.html'))
+    response.headers['Cache-Control'] = 'no-store'
+    return render_template('administracion_users.html')
 
 @app.route('/cliente')
 def cliente():
