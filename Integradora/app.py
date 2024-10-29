@@ -15,10 +15,14 @@ engine = None
 def init_db():
     global engine
     if engine is None:
-        engine = create_engine('mysql+pymysql://root:@localhost/integradora')
+        engine = create_engine('mysql+pymysql://root:pass123@localhost/integradora')
         #mysql+pymysql://<usuario>:<contraseña>@<host>/<nombre_base_de_datos>
+        #Manuel
+        #mysql+pymysql://root:'pass123'@localhost/integradora
+        #Mario
+        #mysql+pymysql://root:@localhost/integradora
 
-#Funciones a llamar desde la web después de cargar la página#####################################################
+#Funciones a llamar desde la web después de cargar la página
 @app.route('/api/contactos')
 def contactos():
     try:
@@ -422,7 +426,7 @@ def logout():
     # Redirigir a la página de inicio o a donde desees
     return jsonify({"redirect": "/"}) # Redirige a la página principal
 
-#####################################3#######Direccionamientos############################################
+#Direccionamientos
 @app.route('/')
 def home():
     return render_template('index.html')
