@@ -11,6 +11,7 @@ footer{
     justify-content: space-between;
     padding: 1%;
     flex-wrap: wrap;
+    color: white;
 }
 footer div{
     flex: 1;
@@ -41,7 +42,6 @@ footer li {
 }
 footer a {
     text-decoration: none; 
-    color: black;
     padding-left: 1rem;
 }
 footer #menu p{
@@ -52,10 +52,11 @@ footer li a {
     text-decoration: none;
     display: block;
 
-    color: black;
+    color: white;
     padding-bottom: 0.125rem;
     margin-right: 3vw;
 }
+/*
 footer li a::before {
     content: '';
     position: absolute;
@@ -73,6 +74,7 @@ footer li a:hover::before {
     transform-origin: left;
     transform: scaleX(1);
 }
+*/
 
 /*Redes sociales*/
 .elementos{

@@ -18,7 +18,7 @@ def init_db():
         engine = create_engine('mysql+pymysql://root:@localhost/integradora')
         #mysql+pymysql://<usuario>:<contraseña>@<host>/<nombre_base_de_datos>
 
-#Funciones a llamar desde la web después de cargar la página
+#Funciones a llamar desde la web después de cargar la página#####################################################
 @app.route('/api/contactos')
 def contactos():
     try:
@@ -422,7 +422,7 @@ def logout():
     # Redirigir a la página de inicio o a donde desees
     return jsonify({"redirect": "/"}) # Redirige a la página principal
 
-#Direccionamientos
+#####################################3#######Direccionamientos############################################
 @app.route('/')
 def home():
     return render_template('index.html')

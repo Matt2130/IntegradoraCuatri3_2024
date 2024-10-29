@@ -26,7 +26,7 @@ body{
 .signup{
     position: relative;
     width:100%;
-    height: 100%;
+    height: auto;
 }
 
 #atras img{
@@ -120,7 +120,6 @@ button:hover{
     transform: translateY(-8vw);
     transition: .8s ease-in-out;
 }
-
 
 #chk:checked ~ .login{
     transform: translateY(-32vw);
