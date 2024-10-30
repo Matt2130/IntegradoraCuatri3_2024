@@ -15,14 +15,14 @@ engine = None
 def init_db():
     global engine
     if engine is None:
-        engine = create_engine('mysql+pymysql://root:pass123@localhost/integradora')
+        engine = create_engine('mysql+pymysql://root:@localhost/integradora')
         #mysql+pymysql://<usuario>:<contraseña>@<host>/<nombre_base_de_datos>
         #Manuel
         #mysql+pymysql://root:'pass123'@localhost/integradora
         #Mario
         #mysql+pymysql://root:@localhost/integradora
 
-#Funciones a llamar desde la web después de cargar la página
+#Funciones a llamar desde la web#####################################################################################################
 @app.route('/api/contactos')
 def contactos():
     try:
@@ -92,6 +92,7 @@ def texto_valores():
     except:
         return Response("Error 404", mimetype='text/html')
 
+#Tablas
 @app.route('/api/tabla_productos')
 def tabla_productos():
     try:
@@ -324,6 +325,7 @@ def tabla_users():
     except:
         return Response("Error 404", mimetype='text/html')
 
+#Registros
 @app.route('/registro_usuario', methods=['POST'])
 def signup():
     init_db()
@@ -372,6 +374,193 @@ def signup():
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
 
+#Eliminación
+@app.route('/eliminar_season', methods=['POST'])
+def eliminar_season():
+    init_db()
+
+    identificador = request.get_json()
+    id = identificador.get('parametro')
+    
+    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                DELETE FROM season_specification WHERE `season_specification`.`Id_season` = :identificados;
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "identificados": id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Eliminacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
+
+@app.route('/eliminar_usuarios', methods=['POST'])
+def eliminar_usuarios():
+    init_db()
+
+    identificador = request.get_json()
+    id = identificador.get('parametro')
+    
+    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                DELETE FROM users WHERE `users`.`Id_user`=:identificados;
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "identificados": id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Eliminacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
+
+@app.route('/eliminar_contenido', methods=['POST'])
+def eliminar_contenido():
+    init_db()
+
+    identificador = request.get_json()
+    id = identificador.get('parametro')
+    
+    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                DELETE FROM content WHERE `content`.`Id_contenido`=:identificados;
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "identificados": id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Eliminacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
+
+@app.route('/eliminar_contacto', methods=['POST'])
+def eliminar_contacto():
+    init_db()
+
+    identificador = request.get_json()
+    id = identificador.get('parametro')
+    
+    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                DELETE FROM contacts WHERE `contacts`.`Id_contact` =:identificados;
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "identificados": id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Eliminacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
+
+@app.route('/eliminar_producto', methods=['POST'])
+def eliminar_producto():
+    init_db()
+
+    identificador = request.get_json()
+    id = identificador.get('parametro')
+    
+    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                DELETE FROM products WHERE `products`.`Id_product` =:identificados;
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "identificados": id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Eliminacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
+    
+#inicio de secion y cerrar seción
 @app.route('/login', methods=['POST'])
 def login():
     init_db()

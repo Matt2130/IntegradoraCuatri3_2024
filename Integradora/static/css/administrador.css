@@ -8,6 +8,11 @@ main{
     min-height: 80vh;
 }
 /*Primera parte*/
+.seleccionado{
+    background-color: rgba(151, 151, 151, 0.411);
+    border-radius: 15vw;
+    padding: 1vw;
+}
 
 #administracion-menu{
     margin-left: 2vw;
