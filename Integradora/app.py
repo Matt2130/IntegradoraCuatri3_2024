@@ -325,6 +325,59 @@ def tabla_users():
     except:
         return Response("Error 404", mimetype='text/html')
 
+#Buscador tablas
+@app.route('/api/buscador_content', methods=['POST'])
+def buscador_content():
+    informacion = request.get_json()
+    buscar = informacion.get('buscar', '')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            
+            sql_query = """
+                SELECT content.Title, content.Describe, content.Id_contenido 
+                FROM content 
+                WHERE content.Title LIKE :buscar OR content.Describe LIKE :buscar
+            """
+            result = connection.execute(text(sql_query), {"buscar": f"%{buscar}%"})
+            contenido = result.fetchall()
+
+            # Construcción de la tabla HTML con los resultados
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>{info[1]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+
+    
 #Registros
 @app.route('/registro_usuario', methods=['POST'])
 def signup():
@@ -360,6 +413,46 @@ def signup():
                 "name": name,
                 "surname": surname,
                 "lastname": lastname
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Registro exitoso"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
+
+@app.route('/registrar_contenido', methods=['POST'])
+def registrar_contenido():
+    init_db()
+
+    data = request.get_json()
+    titulo = data.get('titulo')
+    descripcion = data.get('descripcion')
+
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                INSERT INTO `content` (`Title`, `Describe`)
+                VALUES (:titulo, :descripcion);
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "titulo": titulo,
+                "descripcion": descripcion
             })
 
             # Finalizar transacción

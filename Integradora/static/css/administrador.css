@@ -93,7 +93,7 @@ main{
 /*Segunda parte*/
 #administracion-tabla{
     text-align: center;
-    width: 85%;
+    width: 100%;
     margin: 1vw;
 }
 /*Tabla de la segunda parte*/
@@ -153,6 +153,117 @@ button {
 
 button:hover {
     opacity: 0.9;
+}
+/*//////////////////////////////////////////*/
+.arriba{
+    display: flex;
+    position: sticky;
+    margin-top: 2%;
+}
+.arriba div{
+    width: 80%;
+    padding: 0.5vw;
+}
+.arriba .buscador input{
+    border-radius: 5vw;
+    padding: 0.6vw;
+    border: 0.2rem solid black;
+    width: 90%;
+}
+#abrirModal {
+    background-color: #dc3545;
+    text-decoration: none;
+    border-radius: 0.5vw;
+    margin-left: auto;
+    text-align: center;
+    width: 8%;
+    font-size: 1vw;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    padding: 1vw;
+    transition: all 0.3s ease;
+}
+#abrirModal:hover {
+    transform: scale(1.1);
+}
+#abrirModal:active {
+    transform: scale(0.9);
+}
+
+
+
+
+.toda_tabla{
+    width: 80%;
+}
+/*///////////////////////////////////////*/
+.modal textarea{
+    width: 80%;
+    height: 10vw;
+    resize: none;
+    padding: 1vw;
+    border: 1px solid black;
+    border-radius: 0.5vw;
+    margin: 1vw 0;
+    text-align: center;
+}
+.modal input[type="text"] {
+    width: 20%;
+    padding: 1vw;
+    margin: 1vw 0;
+    border: none;
+    border-bottom: 0.2vw solid black;
+    font-size: 1vw;
+}
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-contenido {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 2vw;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 80%;
+    text-align: center;
+    border-radius: 1vw;
+    min-height: 80%;
+}
+
+.cerrar {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#registrar {
+    background-color: #dc3545;
+    text-decoration: none;
+    border-radius: 0.5vw;
+    text-align: center;
+    width: 8%;
+    font-size: 1vw;
+    display: flex;
+    padding: 1vw;
+    transition: all 0.3s ease;
+    margin: 0 auto;
+}
+#registrar:hover {
+    transform: scale(1.1);
+}
+#registrar:active {
+    transform: scale(0.9);
 }
 
 @media (max-width: 768px) {
