@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function eliminarProducto(param) {
     const confirmacion = confirm("¿Estás seguro de que deseas eliminar este usuario? (Ya no sera reversible esta operación)");
-
+    console.log(param);
     if (confirmacion){
         // Mostrar la pantalla de carga
         document.getElementById('loading').style.display = 'flex';
@@ -100,7 +100,100 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtiene el modal
+    var modal = document.getElementById("miModal");
 
+    // Obtiene el botón que abre la modal
+    var btn = document.getElementById("abrirModal");
+
+    // Obtiene el elemento <span> que cierra la modal
+    var span = document.getElementsByClassName("cerrar")[0];
+
+    // Cuando el usuario hace clic en el botón, se abre la modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // Cuando el usuario hace clic en <span> (x), se cierra la modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+});
+//Modal para edición
+function editarProducto(id) {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "block"; // Muestra el modal
+
+    fetch('/api/buscador_content_edit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text(); // Cambiado a text() para manejar HTML
+    })
+    .then(html => {
+        // Inserta el HTML en el modal
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en el registro';
+    });
+}
+
+function cerrarModal() {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    var modal = document.getElementById("miModal2");
+    if (event.target === modal) {
+        cerrarModal();
+    }
+}
+//Actualizacion
+function editarsqlcontenido(idw){
+    const titulo = document.getElementById('tituloedit').value;
+    const descripcion = document.getElementById('descripcionedit').value;
+    const id = idw;
+
+    fetch('/actualizar_contenido', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            titulo: titulo,
+            descripcion: descripcion,
+            id:id
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message); 
+        window.location.href = '/administrador_content';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Error al registrar: " + error.message);
+    });
+}
+/*
+ */
+////////////////////////////////////////////////////////////////////////////////
 function registrarcontenido(){
     const titulo = document.getElementById('titulo').value;
     const descripcion = document.getElementById('descripcion').value;
@@ -131,9 +224,24 @@ function registrarcontenido(){
     });
 }
 
-function editarProducto(id){
-    console.log(id)
+//////////////Mostrar contenido de la base de datos//////////////////
+//Todos se pueden a la vez
+/*
+function toggleExpand(event, element) {
+    if (event.target.tagName !== 'BUTTON') { // Solo expande si no se ha hecho clic en un botón
+      element.classList.toggle("expanded");
+    }
 }
-
-//////////////Edicion de contenido//////////////////
-//Modal
+ */
+//Uno a la vez
+function toggleExpand(event, element) {
+    if (event.target.tagName !== 'BUTTON') { // Solo expande si no se ha hecho clic en un botón
+        const allContents = document.querySelectorAll('.content');
+        allContents.forEach(content => {
+            if (content !== element) { // Cierra los demás contenidos
+                content.classList.remove("expanded");
+            }
+        });
+        element.classList.toggle("expanded"); // Alterna el estado del div clicado
+    }
+}

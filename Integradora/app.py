@@ -241,34 +241,16 @@ def tabla_content():
             result = connection.execute(text('SELECT content.Title, content.Describe, content.Id_contenido FROM content;'))
             contenido = result.fetchall()
             
-            html = """
-            <table>
-                <thead>
-                    <tr>
-                        <th>Titulo</th>
-                        <th>Descripción</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-            """
+            html = ""
             for info in contenido:
                 html += f"""
-                    <tr>
-                        <td>{info[0]}</td>
-                        <td>{info[1]}</td>
-                        <td>
-                            <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
-                            <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
-                        </td>
-                    </tr>
-                    
+                    <div class="content" onclick="toggleExpand(event, this)">
+                        <h2>{info[0]}</h2>
+                        <p>{info[1]}</p>
+                        <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
+                        <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
+                    </div>
                 """
-
-            html += """
-                </tbody>
-            </table>
-            """
             
             return Response(html, mimetype='text/html')
     except:
@@ -344,40 +326,22 @@ def buscador_content():
             contenido = result.fetchall()
 
             # Construcción de la tabla HTML con los resultados
-            html = """
-            <table>
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-            """
+            html = ""
             for info in contenido:
                 html += f"""
-                    <tr>
-                        <td>{info[0]}</td>
-                        <td>{info[1]}</td>
-                        <td>
-                            <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
-                            <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
-                        </td>
-                    </tr>
+                    <div class="content" onclick="toggleExpand(event, this)">
+                        <h2>{info[0]}</h2>
+                        <p>{info[1]}</p>
+                        <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
+                        <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
+                    </div>
                 """
-
-            html += """
-                </tbody>
-            </table>
-            """
             
             return Response(html, mimetype='text/html')
     except Exception as e:
         print(f"Error en la consulta: {e}")
         return Response("Error 404", mimetype='text/html')
 
-    
 #Registros
 @app.route('/registro_usuario', methods=['POST'])
 def signup():
@@ -652,7 +616,92 @@ def eliminar_producto():
 
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
-    
+
+#Solicitar dtos para edición
+@app.route('/api/buscador_content_edit', methods=['POST'])
+def buscador_content_edit():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT content.Title, content.Describe, content.Id_contenido 
+                FROM content 
+                WHERE content.Id_contenido=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            html = f"""
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h1>Edición de contenido</h1>
+            <br>
+            <label for="titulo">
+                <h2>Titulo</h2>
+                <br>
+                <input type="text" id="tituloedit" placeholder="Titulo" value="{contenido[0]}">
+            </label>
+            <br>
+            <label for="descripcion">
+                <h2>Descripción</h2>
+                <br>
+                <textarea name="descripcion" id="descripcionedit" placeholder="Descripcion">{contenido[1]}</textarea>
+            </label>
+            <br>
+            <button id="registrar" onclick="editarsqlcontenido({contenido[2]})">Actualizar</button>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+
+#Actualizar datos
+@app.route('/actualizar_contenido', methods=['POST'])
+def actualizar_contenido():
+    init_db()
+
+    data = request.get_json()
+    titulo = data.get('titulo')
+    descripcion = data.get('descripcion')
+    id = data.get('id')
+
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                UPDATE `content` SET `Title` = :titulo, `Describe` = :descripcion WHERE `content`.`Id_contenido` = :id;
+            """
+            print(f"Ejecutando consulta: {sql_query}")
+
+            # Ejecutar la consulta
+            connection.execute(text(sql_query), {
+                "titulo": titulo,
+                "descripcion": descripcion,
+                "id":id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Actualizacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
 #inicio de secion y cerrar seción
 @app.route('/login', methods=['POST'])
 def login():
@@ -708,7 +757,7 @@ def logout():
     # Redirigir a la página de inicio o a donde desees
     return jsonify({"redirect": "/"}) # Redirige a la página principal
 
-#Direccionamientos
+#Direccionamientos####################################################################
 @app.route('/')
 def home():
     return render_template('index.html')

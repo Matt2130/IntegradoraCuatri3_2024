@@ -94,7 +94,8 @@ main{
 #administracion-tabla{
     text-align: center;
     width: 100%;
-    margin: 1vw;
+    display: flex;
+    flex-wrap: wrap;
 }
 /*Tabla de la segunda parte*/
 table {
@@ -123,11 +124,6 @@ th, td {
     overflow-wrap: break-word;
 }
 
-/*
-tr:hover {
-    background-color: #f1f1f1;
-}
-*/
 
 button {
     color: white;
@@ -264,6 +260,40 @@ button:hover {
 }
 #registrar:active {
     transform: scale(0.9);
+}
+/*Targetas expandibles*/
+.content {
+    width: 30%;
+    padding: 0.5vw;
+    background-color: #bcc6e6;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    overflow: hidden;
+    max-height: 3.7vw; /* Altura inicial */
+    margin: 1vw;
+    min-width: 40vh;
+    z-index: 0;
+}
+.content p{
+    text-align: justify;
+    margin-bottom: 1vw;
+    font-size: 1.25vw;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 1.5s ease, transform 5s ease;
+}
+.content h2{
+    padding: 0.8vw 0;
+    font-size: 1.5vw;
+}
+  /* Clase para expandir el contenido */
+.expanded {
+    max-height: none; /* Altura cuando está expandido */
+    max-height: 50000000000000px;
+}
+.expanded p {
+    opacity: 1; /* Muestra el texto cuando está expandido */
+    transform: translateY(0); /* Restablece la posición original */
 }
 
 @media (max-width: 768px) {
