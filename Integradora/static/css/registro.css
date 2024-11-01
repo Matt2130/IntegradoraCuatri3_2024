@@ -11,7 +11,7 @@ body{
 
 .main{
     width: 60vw;
-    height: 40vw;
+    height: 50vw;
     overflow: hidden;
     /* background: url("") no-repeat center / cover; */
     background: #A1A7BC;
@@ -79,10 +79,10 @@ label #icon{
 }
 
 input{
-    width: 40%;
+    width: 50%;
     height: 1vw;
     background: #e0dede;
-    font-size: .6rem;
+    font-size: 1rem;
     text-align: center;
     display: flex;
     margin: 20px auto;
@@ -115,14 +115,14 @@ button:hover{
 
 .login {
     height: 40vw;
-    background:#eee ;
+    background:#eee;
     border-radius: 10%;
-    transform: translateY(-8vw);
+    transform: translateY(1vw);
     transition: .8s ease-in-out;
 }
 
 #chk:checked ~ .login{
-    transform: translateY(-32vw);
+    transform: translateY(-28vw);
 }
 
 #chk:checked ~ .login label{

@@ -191,8 +191,6 @@ function editarsqlcontenido(idw){
         alert("Error al registrar: " + error.message);
     });
 }
-/*
- */
 ////////////////////////////////////////////////////////////////////////////////
 function registrarcontenido(){
     const titulo = document.getElementById('titulo').value;

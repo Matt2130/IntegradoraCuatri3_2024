@@ -16,14 +16,14 @@
             <form id="signupForm">
                 <a id="atras" href=""><img src="{{ url_for('static', filename='image/arrow_back.png') }}" alt="Regreso"></a>
                 <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="Logo" id="logo">
-                <label for="chk" aria-hidden="true">Sign up</label>
-                <input type="text" id="name" placeholder="Name">
-                <input type="text" id="lastname" placeholder="Lastname">
-                <input type="text" id="surname" placeholder="Surname">
-                <input type="text" id="username" name="txt" placeholder="User name">
+                <label for="chk" aria-hidden="true">Registrar</label>
+                <input type="text" id="name" placeholder="Nombre">
+                <input type="text" id="lastname" placeholder="Apellido paterno">
+                <input type="text" id="surname" placeholder="Apellido materno">
+                <input type="text" id="username" name="txt" placeholder="Nombre de Usuario">
                 <input type="email" id="email" name="email" placeholder="Email">
-                <input type="password" id="password" name="pswd" placeholder="Password">
-                <button type="submit">Sign up</button>
+                <input type="password" id="password" name="pswd" placeholder="Contraseña">
+                <button type="submit">Registrar</button>
             </form>
             <div id="loading" class="loading-overlay" style="display: none;">
                 <div class="loader"></div>
@@ -31,10 +31,10 @@
         </div>
         <div class="login">
             <form id="loginForm" method="POST">
-                <label for="chk" aria-hidden="true"><span>Do you have an account,&nbsp;</span>Log in</label>
+                <label for="chk" aria-hidden="true"><span>Tienes una cuenta? ,&nbsp;</span>Inicia Sesión</label>
                 <input type="email" id="email2" name="email" placeholder="Email" required="">
-                <input type="password" id="password2" name="pswd" placeholder="Password" required="">
-                <button type="submit">Log in</button>
+                <input type="password" id="password2" name="pswd" placeholder="Contraseña" required="">
+                <button type="submit">Iniciar Sesion</button>
             </form>
         </div>
     </div>
