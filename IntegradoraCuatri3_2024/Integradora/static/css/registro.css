@@ -1,0 +1,138 @@
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'jost', sans-serif;
+    background-color: #F7F7F7;
+}
+
+.main{
+    width: 60vw;
+    height: 50vw;
+    overflow: hidden;
+    /* background: url("") no-repeat center / cover; */
+    background: #A1A7BC;
+    border-radius: 10px;
+    box-shadow: 5px 20px 50px #000;
+}
+
+#chk{
+    display: none;
+}
+
+.signup{
+    position: relative;
+    width:100%;
+    height: auto;
+}
+
+#atras img{
+    width: 4vw;
+    position: absolute;
+    margin: 1vw 0 0 2vw;
+}
+
+#logo{
+    width: 10vw;
+    justify-content: center;
+    display: flex;
+    margin: .5vw auto;
+}
+
+.signup label{
+    font-size: 1.8em;
+    justify-content: center;
+    display: flex;
+    margin:.5vw;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+.login label{
+    color: #fed800;
+    transform: scale(.6);
+    font-size: 1.8em;
+    justify-content: center;
+    display: flex;
+    margin:4vw;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+.login span{
+    color: #2e2d28;
+    justify-content: center;  
+}
+
+label #icon{
+    color: #fff;
+    font-size: 2.1em;
+    justify-content: center;
+    display: flex;
+    margin:4vw;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+
+input{
+    width: 50%;
+    height: 1vw;
+    background: #e0dede;
+    font-size: 1rem;
+    text-align: center;
+    display: flex;
+    margin: 20px auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button{
+    width: 30%;
+    height: 2vw;
+    margin: .5vw auto;
+    justify-content: center;
+    display: block;
+    color: #fff;
+    background: #2c2c2c;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 20px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: .2s ease-in;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #000;
+}
+
+.login {
+    height: 40vw;
+    background:#eee;
+    border-radius: 10%;
+    transform: translateY(1vw);
+    transition: .8s ease-in-out;
+}
+
+#chk:checked ~ .login{
+    transform: translateY(-28vw);
+}
+
+#chk:checked ~ .login label{
+    transform: scale(1);
+    margin: .5vw;
+}
+#chk:checked ~ .login span{
+    display: none;
+}
+
+#chk:checked ~ .signup label{
+    transform: scale(.8);
+}

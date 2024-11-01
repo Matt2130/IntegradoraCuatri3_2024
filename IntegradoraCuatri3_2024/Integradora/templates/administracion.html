@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blancos y Confecciones</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/administrador.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cargando.css') }}">
+    <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/administracion.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+</head>
+<body>
+    <header id="header">
+        <a href="/">
+            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="logo" id="logo">
+        </a>
+
+        <input type="checkbox" id="btn-menu"> <!-- Checkbox visible, no se muestra en la navegación -->
+        <label for="btn-menu">
+            <img src="{{ url_for('static', filename='image/options.svg') }}" alt="menu" id="iconmenu">
+        </label>
+
+        <nav id="menu">
+            <ul>
+                <li><a href="/administrador_productos">Administrar</a></li>
+                <li><a href="/">Productos</a></li>
+            </ul>
+            <button id="salir">Cerrar secion</button>
+        </nav>
+    </header>
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loader"></div>
+    </div>
+    <main>
+        <section id="administracion-menu">
+            <ul>
+                <li><a href="/administrador_productos">
+                    <span>
+                        <p class="seleccionado">
+                            Productos
+                        </p>
+                    </span>
+                </a></li>
+                <li><a href="/administrador_contact">
+                    <span>
+                        Contactos
+                    </span>
+                </a></li>
+                <li><a href="/administrador_content">
+                    <span>
+                        Contenido
+                    </span>
+                </a></li>
+                <li><a href="administrador_user">
+                    <span>
+                        Usuarios
+                    </span>
+                </a></li>
+                <li><a href="/administrador_season">
+                    <span>
+                        Otros
+                    </span>
+                </a></li>
+            </ul>
+        </section>
+        <section id="administracion-tabla">
+            
+        </section>
+    </main>
+
+    <footer>
+        <div id="menu">
+            <p>
+                Menu
+            </p>
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+        </div>
+        <div id="contactos">
+
+        </div>
+        <div id="derechos_reservados">
+            <div>
+                <img src="{{ url_for('static', filename='image/LOGO.png') }}" alt="logo" id="logo">
+                <p>
+                    ®Blancos y confecciones de durango S.A. de C.V.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
