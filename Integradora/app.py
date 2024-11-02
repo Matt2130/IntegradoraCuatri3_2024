@@ -1,5 +1,6 @@
 from flask import Flask, make_response, redirect, url_for, render_template, session, request, jsonify, Response
 from sqlalchemy import create_engine, text
+from functools import wraps
 #Se eliminara pero es para hacer pruebas
 import time
 
@@ -10,6 +11,19 @@ app.secret_key = '12345'  # Cambia esto por una clave única
 
 #Conexión
 engine = None
+
+##Decorador de Autorización
+def login_required(role):
+    def decorator(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if 'permiso_usuario' not in session:
+                return redirect(url_for('inicio_usuario'))
+            if session['permiso_usuario'] != role:
+                return redirect(url_for('/')) 
+            return f(*args, **kwargs)
+        return wrapped
+    return decorator
 
 #Función para iniciar la base de datos
 def init_db():
@@ -23,6 +37,12 @@ def init_db():
         #mysql+pymysql://root:@localhost/integradora
 
 #Funciones a llamar desde la web#####################################################################################################
+@app.route('/check_session', methods=['GET'])
+def check_session():
+    if 'permiso_usuario' in session:
+        return jsonify({"status": "active"}), 200
+    return jsonify({"status": "inactive"}), 401
+
 @app.route('/api/contactos')
 def contactos():
     try:
@@ -926,7 +946,7 @@ def actualizar_contacto():
 
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al actualizar: {str(e)}"}), 500
-    
+
 #inicio de secion y cerrar seción
 @app.route('/login', methods=['POST'])
 def login():
@@ -940,33 +960,24 @@ def login():
     try:
         with engine.connect() as connection:
             sql_query = """
-            SELECT users.Rol FROM users WHERE users.Password=:password AND users.Email=:email;
+            SELECT users.Rol, users.Id_user, users.Name FROM users WHERE users.Password=:password AND users.Email=:email;
             """
             result = connection.execute(text(sql_query), {
                 "email": email,
                 "password": password
             }).fetchone()
             
-            print(result)
-            
             if result:
-                rol = result[0]
-                # Almacena la información del usuario en la sesión
-                session['email'] = email
-                session['rol'] = rol
-                
-                print(rol)
+                #Almacenar los datos del usuario
+                session['permiso_usuario'] = result[0]
+                session['id_usuario'] = result[1]
+                session['usuario_usuario'] = result[2]
                 
                 # Redirige según el rol
-                if rol == 'administrador':
-                    print(1)
+                if session['permiso_usuario'] == 'administrador':
                     return jsonify({"redirect": "/administrador_productos"})
-                elif rol == 'cliente':
-                    print(2)
-                    return jsonify({"redirect": "/cliente"})
                 else:
-                    print(3)
-                    return jsonify({"message": "Rol no reconocido"})
+                    return jsonify({"redirect": "/"})
             else:
                 print(4)
                 return jsonify({"message": "Usuario o contraseña incorrectos"})
@@ -987,45 +998,65 @@ def logout():
 def home():
     return render_template('index.html')
 
+def login_required(role):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if 'permiso_usuario' not in session or session['permiso_usuario'] != role:
+                return redirect(url_for('home'))  # Redirigir al inicio si no está autenticado
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
 @app.route('/administrador_productos')
+@login_required('administrador')
 def administrador_productos():
-    #if 'email' not in session:  # Verifica si el usuario está logueado
-    #    return redirect(url_for('/'))
-    #response = make_response(render_template('administracion.html'))
-    #response.headers['Cache-Control'] = 'no-store'
-    return render_template('administracion.html')
+    response = make_response(render_template('administracion.html'))
+    # Control de caché
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/administrador_season')
+@login_required('administrador')
 def administrador_season():
-    #if 'email' not in session:  # Verifica si el usuario está logueado
-    #    return redirect(url_for('/'))
-    #response = make_response(render_template('administracion.html'))
-    #response.headers['Cache-Control'] = 'no-store'
-    return render_template('administracion_season.html')
+    response = make_response(render_template('administracion_season.html'))
+    # Control de caché
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/administrador_contact')
+@login_required('administrador')
 def administrador_contact():
-    #if 'email' not in session:  # Verifica si el usuario está logueado
-    #    return redirect(url_for('/'))
-    #response = make_response(render_template('administracion.html'))
-    #response.headers['Cache-Control'] = 'no-store'
-    return render_template('administracion_contactos.html')
+    response = make_response(render_template('administracion_contactos.html'))
+    # Control de caché
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/administrador_content')
+@login_required('administrador')
 def administrador_content():
-    #if 'email' not in session:  # Verifica si el usuario está logueado
-    #    return redirect(url_for('/'))
-    #response = make_response(render_template('administracion.html'))
-    #response.headers['Cache-Control'] = 'no-store'
-    return render_template('administracion_content.html')
+    response = make_response(render_template('administracion_content.html'))
+    # Control de caché
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/administrador_user')
+@login_required('administrador')
 def administrador_user():
-    #if 'email' not in session:  # Verifica si el usuario está logueado
-    #    return redirect(url_for('/'))
-    #response = make_response(render_template('administracion.html'))
-    #response.headers['Cache-Control'] = 'no-store'
-    return render_template('administracion_users.html')
+    response = make_response(render_template('administracion_users.html'))
+    # Control de caché
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/cliente')
 def cliente():

@@ -1,7 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('salir').addEventListener('click', function() {
-        console.log(1234); // Mensaje de depuración para confirmar el clic en el botón
+    // Verificar el estado de la sesión al cargar la página
+    fetch('/check_session', { // Solicitud para comprobar el estado de la sesión
+        method: 'GET'
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Si la sesión no está activa, redirigir a la página de inicio
+            window.location.href = '/';
+        }
+    })
+    .catch(error => {
+        console.error('Error al comprobar la sesión:', error);
+    });
 
+    // Escuchar el evento click en el botón de salir
+    document.getElementById('salir').addEventListener('click', function() {
         // Realizar la solicitud para cerrar sesión
         fetch('/logout', {
             method: 'POST',
