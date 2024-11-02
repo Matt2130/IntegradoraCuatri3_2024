@@ -6,7 +6,7 @@
     <title>Blancos y Confecciones</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/administrador.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/administrador_contacto.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cargando.css') }}">
     <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
     <script src="{{ url_for('static', filename='js/administracion_contactos.js') }}"></script>
@@ -34,6 +34,87 @@
     <div id="loading" class="loading-overlay" style="display: none;">
         <div class="loader"></div>
     </div>
+    <!--Modal para registrar-->
+    <div id="miModal" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar">&times;</span>
+            <h1>
+                Registrar Contactos
+            </h1>
+            <br>
+            <div id="formulario_contactos">
+                <div id="izquierda">
+                    <label for="Facebook">
+                        <h2>
+                            Facebook
+                        </h2>
+                        <br>
+                        <input type="text" id="Facebook" placeholder="Facebook">
+                    </label>
+                    <br>
+                    <label for="Instagram">
+                        <h2>
+                            Instagram
+                        </h2>
+                        <br>
+                        <input type="text" id="Instagram" placeholder="Instagram">
+                    </label>
+                    <br>
+                    <label for="Tik_Tok">
+                        <h2>
+                            Tik Tok
+                        </h2>
+                        <br>
+                        <input type="text" id="Tik_Tok" placeholder="Tik Tok">
+                    </label>
+                    <br>
+                    <label for="Email">
+                        <h2>
+                            Email
+                        </h2>
+                        <br>
+                        <input type="text" id="Email" placeholder="Email">
+                    </label>
+                </div>
+                <div id="derecha">
+                    <label for="Twiter">
+                        <h2>
+                            Twitter
+                        </h2>
+                        <br>
+                        <input type="text" id="Twiter" placeholder="Twitter">
+                    </label>
+                    <br>
+                    <label for="Whatsapp">
+                        <h2>
+                            Whatsapp
+                        </h2>
+                        <br>
+                        <input type="text" id="Whatsapp" placeholder="Whatsapp">
+                    </label>
+                    <br>
+                    <label for="Telefono">
+                        <h2>
+                            Telefono
+                        </h2>
+                        <br>
+                        <input type="text" id="Telefono" placeholder="Telefono">
+                    </label>
+                </div>
+            </div>
+            <br>
+            <button id="registrar" onclick="registrarcontactos()">Registrar</button>
+        </div>
+    </div>
+
+    <!--Modal para editar-->
+    <div id="miModal2" class="modal">
+        <div class="modal-contenido" id="edicion_contenido">
+            
+            
+        </div>
+    </div>
+
     <main>
         <section id="administracion-menu">
             <ul>
@@ -66,8 +147,10 @@
                 </a></li>
             </ul>
         </section>
-        <section id="administracion-tabla">
-            
+        <section class="toda_tabla">
+            <section id="administracion-tabla">
+                
+            </section>
         </section>
     </main>
 

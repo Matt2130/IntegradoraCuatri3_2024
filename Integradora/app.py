@@ -189,46 +189,71 @@ def tabla_contact():
         with engine.connect() as connection:
             result = connection.execute(text('SELECT contacts.Facebook, contacts.Instagram, contacts.Tik_tok, contacts.Email, contacts.Twitter, contacts.Whatsapp, contacts.Phone, contacts.Id_contact FROM contacts;'))
             contenido = result.fetchall()
-            
-            html = """
-            <table>
-                <thead>
-                    <tr>
-                        <th>Facebook</th>
-                        <th>Instagram</th>
-                        <th>Tik_tok</th>
-                        <th>Email</th>
-                        <th>Twitter</th>
-                        <th>Whatsapp</th>
-                        <th>Telefono</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-            """
-            for info in contenido:
+            html = ""
+            if contenido:
+                for info in contenido:
+                    html += f"""
+                    <h2>
+                        Facebook
+                    </h2>
+                    <h3>
+                        {info[0]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Instagra
+                    </h2>
+                    <h3>
+                        {info[1]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Tik Tok
+                    </h2>
+                    <h3>
+                        {info[2]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Email
+                    </h2>
+                    <h3>
+                        {info[3]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Twitter
+                    </h2>
+                    <h3>
+                        {info[4]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Whatsapp
+                    </h2>
+                    <h3>
+                        {info[5]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Telefono
+                    </h2>
+                    <h3>
+                        {info[6]}
+                    </h3>
+                    <br>
+                    <h2>
+                        Acciones
+                    </h2>
+                        <button onclick="editarProducto({info[7]})" class="editar">Editar</button>
+                        <button onclick="eliminarProducto({info[7]})" class="eliminar">Eliminar</button>
+                    """
+            else:
                 html += f"""
-                    <tr>
-                        <td>{info[0]}</td>
-                        <td>{info[1]}</td>
-                        <td>{info[2]}</td>
-                        <td>{info[3]}</td>
-                        <td>{info[4]}</td>
-                        <td>{info[5]}</td>
-                        <td>{info[6]}</td>
-                        <td>
-                            <button onclick="editarProducto({info[7]})" class="editar">Editar</button>
-                            <button onclick="eliminarProducto({info[7]})" class="eliminar">Eliminar</button>
-                        </td>
-                    </tr>
-                    
-                """
-
-            html += """
-                </tbody>
-            </table>
-            """
-            
+                    <div class="arriba">
+                        <button id="abrirModal" onclick="abrirModal()">Registrar</button>
+                    </div>
+                    """
             return Response(html, mimetype='text/html')
     except:
         return Response("Error 404", mimetype='text/html')
@@ -431,6 +456,55 @@ def registrar_contenido():
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
 
+@app.route('/registrar_contactos', methods=['POST'])
+def registrar_contactos():
+    init_db()
+
+    data = request.get_json()
+    facebook = data.get('facebook')
+    instagram = data.get('instagram')
+    tik_tok = data.get('tik_tok')
+    email = data.get('email')
+    twitter = data.get('twitter')
+    whatsapp = data.get('whatsapp')
+    phone = data.get('phone')
+
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                INSERT INTO `contacts` (`Facebook`, `Instagram`, `Tik_tok`, `Email`, `Twitter`, `Whatsapp`, `Phone`) 
+                VALUES (:facebook, :instagram, :tik_tok, :email, :twitter, :whatsapp, :phone);
+            """
+
+            # Ejecutar la consulta con los datos
+            connection.execute(text(sql_query), {
+                "facebook": facebook,
+                "instagram": instagram,
+                "tik_tok": tik_tok,
+                "email": email,
+                "twitter": twitter,
+                "whatsapp": whatsapp,
+                "phone": phone
+            })
+
+            # Confirmar la transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Registro exitoso"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
+
 #Eliminación
 @app.route('/eliminar_season', methods=['POST'])
 def eliminar_season():
@@ -617,7 +691,7 @@ def eliminar_producto():
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al eliminar: {str(e)}"}), 500
 
-#Solicitar dtos para edición
+#Solicitar datos para edición
 @app.route('/api/buscador_content_edit', methods=['POST'])
 def buscador_content_edit():
     informacion = request.get_json()
@@ -661,6 +735,98 @@ def buscador_content_edit():
         print(f"Error en la consulta: {e}")
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/api/buscador_contacto_edit', methods=['POST'])
+def buscador_contacto_edit():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT contacts.Facebook, contacts.Instagram, contacts.Tik_tok, contacts.Email, contacts.Twitter, contacts.Whatsapp, contacts.Phone, contacts.Id_contact FROM contacts WHERE contacts.Id_contact=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            html = f"""
+                <span class="cerrar">&times;</span>
+            <h1>
+                Registrar Contactos
+            </h1>
+            <br>
+            <div id="formulario_contactos">
+                <div id="izquierda">
+                    <label for="Facebook">
+                        <h2>
+                            Facebook
+                        </h2>
+                        <br>
+                        <input type="text" id="Facebookd" placeholder="Facebook" value="{contenido[0]}">
+                    </label>
+                    <br>
+                    <label for="Instagram">
+                        <h2>
+                            Instagram
+                        </h2>
+                        <br>
+                        <input type="text" id="Instagramd" placeholder="Instagram" value="{contenido[1]}">
+                    </label>
+                    <br>
+                    <label for="Tik_Tok">
+                        <h2>
+                            Tik Tok
+                        </h2>
+                        <br>
+                        <input type="text" id="Tik_Tokd" placeholder="Tik Tok" value="{contenido[2]}">
+                    </label>
+                    <br>
+                    <label for="Email">
+                        <h2>
+                            Email
+                        </h2>
+                        <br>
+                        <input type="text" id="Emaild" placeholder="Email" value="{contenido[3]}">
+                    </label>
+                </div>
+                <div id="derecha">
+                    <label for="Twiter">
+                        <h2>
+                            Twitter
+                        </h2>
+                        <br>
+                        <input type="text" id="Twiterd" placeholder="Twitter" value="{contenido[4]}">
+                    </label>
+                    <br>
+                    <label for="Whatsapp">
+                        <h2>
+                            Whatsapp
+                        </h2>
+                        <br>
+                        <input type="text" id="Whatsappd" placeholder="Whatsapp" value="{contenido[5]}">
+                    </label>
+                    <br>
+                    <label for="Telefono">
+                        <h2>
+                            Telefono
+                        </h2>
+                        <br>
+                        <input type="text" id="Telefonod" placeholder="Telefono" value="{contenido[6]}">
+                    </label>
+                </div>
+            </div>
+            <br>
+            <button id="registrar" onclick="actualizartabalcontactos({contenido[7]})">Actualizar</button>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+    
 #Actualizar datos
 @app.route('/actualizar_contenido', methods=['POST'])
 def actualizar_contenido():
@@ -702,6 +868,65 @@ def actualizar_contenido():
 
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
+
+@app.route('/actualizar_contacto', methods=['POST'])
+def actualizar_contacto():
+    init_db()
+
+    data = request.get_json()
+    facebook = data.get('facebook')
+    instagram = data.get('instagram')
+    tik_tok = data.get('tik_tok')
+    email = data.get('email')
+    twitter = data.get('twitter')
+    whatsapp = data.get('whatsapp')
+    phone = data.get('phone')
+    id = data.get('id_contact')
+
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                UPDATE `contacts` 
+                SET `Facebook` = :facebook, 
+                    `Instagram` = :instagram, 
+                    `Tik_tok` = :tik_tok, 
+                    `Email` = :email, 
+                    `Twitter` = :twitter, 
+                    `Whatsapp` = :whatsapp, 
+                    `Phone` = :phone 
+                WHERE `contacts`.`Id_contact` = :id;
+            """
+
+            # Ejecutar la consulta con los datos
+            connection.execute(text(sql_query), {
+                "facebook": facebook,
+                "instagram": instagram,
+                "tik_tok": tik_tok,
+                "email": email,
+                "twitter": twitter,
+                "whatsapp": whatsapp,
+                "phone": phone,
+                "id":id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Actualizacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al actualizar: {str(e)}"}), 500
+    
 #inicio de secion y cerrar seción
 @app.route('/login', methods=['POST'])
 def login():

@@ -145,7 +145,7 @@ function editarProducto(id) {
     })
     .catch(error => {
         console.error('Error:', error);
-        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en el registro';
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en la edición';
     });
 }
 

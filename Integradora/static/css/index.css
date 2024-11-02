@@ -71,15 +71,15 @@
 /*3 parte*/
 #acercadenosotros{
     width: 100%;
-    height: 90vh;
+    height: 60vh;
     background-color: #F5EF06;
     display: flex;
     text-align: center;
 }
 #acercadenosotros img{
     padding: 5vh;
-    width: 85%;
-    height: auto;
+    width: auto;
+    height: 60vh;
 }
 #acercadenosotros #texto2{
     width: 50%;
