@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/administrador.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cargando.css') }}">
     <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/administracion_season.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/administracion_inicio.js') }}"></script>
     <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
 </head>
 <body>
@@ -34,47 +34,21 @@
     <div id="loading" class="loading-overlay" style="display: none;">
         <div class="loader"></div>
     </div>
-    <!--Modal para registrar-->
-    <div id="miModal" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar">&times;</span>
-            <div class="alinear">
-                <h1>
-                    Registro de temporada
-                </h1>
-                <br>
-                <label for="temporada">
-                    <h2>
-                        Temporada
-                    </h2>
-                    <br>
-                    <input type="text" id="temporada" placeholder="Temporada">
-                </label>
-                <br>
-                <button id="registrar" onclick="registrartemporadao()">Registrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!--Modal para editar-->
-    <div id="miModal2" class="modal">
-        <div class="modal-contenido" id="edicion_contenido">
-            
-            
-        </div>
-    </div>
-    
     <main>
         <section id="administracion-menu">
             <ul>
                 <li><a href="/administrador">
                     <span>
-                        Inicio
+                        <p class="seleccionado">
+                            Inicio
+                        </p>
                     </span>
                 </a></li>
                 <li><a href="/administrador_productos">
                     <span>
-                        Productos
+                        <p>
+                            Productos
+                        </p>
                     </span>
                 </a></li>
                 <li><a href="/administrador_contact">
@@ -94,23 +68,13 @@
                 </a></li>
                 <li><a href="/administrador_season">
                     <span>
-                        <p class="seleccionado">
-                            Temporadas
-                        </p>
+                        Temporadas
                     </span>
                 </a></li>
             </ul>
         </section>
-        <section class="toda_tabla">
-            <div class="arriba">
-                <div class="buscador">
-                    <input type="text" placeholder="Buscador" id="buscador" oninput="buscador()">
-                </div>
-                <button id="abrirModal">Registrar</button>
-            </div>
-            <section id="administracion-tabla">
-                
-            </section>
+        <section id="administracion-tabla">
+            
         </section>
     </main>
 

@@ -306,7 +306,7 @@ def tabla_users():
     try:
         init_db()
         with engine.connect() as connection:
-            result = connection.execute(text('SELECT users.User, users.Password, users.Email, users.Name, users.Surname, users.Lastname, users.Rol, users.Id_user FROM users;'))
+            result = connection.execute(text('SELECT users.User, users.Email, users.Name, users.Surname, users.Lastname, users.Rol, users.Id_user FROM users;'))
             contenido = result.fetchall()
             
             html = """
@@ -314,7 +314,6 @@ def tabla_users():
                 <thead>
                     <tr>
                         <th>Usuario</th>
-                        <th>Contraseña</th>
                         <th>Correo</th>
                         <th>Nombre</th>
                         <th>Apellido paterno</th>
@@ -334,10 +333,9 @@ def tabla_users():
                         <td>{info[3]}</td>
                         <td>{info[4]}</td>
                         <td>{info[5]}</td>
-                        <td>{info[6]}</td>
                         <td>
-                            <button onclick="editarProducto({info[7]})" class="editar">Editar</button>
-                            <button onclick="eliminarProducto({info[7]})" class="eliminar">Eliminar</button>
+                            <button onclick="editarProducto({info[6]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[6]})" class="eliminar">Eliminar</button>
                         </td>
                     </tr>
                     
@@ -352,6 +350,30 @@ def tabla_users():
     except:
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/api/contenido_inicio_administracion')
+def contenido_inicio_administracion():
+    try:
+        init_db()
+        with engine.connect() as connection:
+            result = connection.execute(text('SELECT content.Title, content.Describe, content.Id_contenido FROM content;'))
+            contenido = result.fetchall()
+            
+            html = "Proximamente"
+            '''
+            for info in contenido:
+                html += f"""
+                    <div class="content" onclick="toggleExpand(event, this)">
+                        <h2>{info[0]}</h2>
+                        <p>{info[1]}</p>
+                        <button onclick="editarProducto({info[2]})" class="editar">Editar</button>
+                        <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
+                    </div>
+                """
+            '''
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
 #Buscador tablas
 @app.route('/api/buscador_content', methods=['POST'])
 def buscador_content():
@@ -381,6 +403,55 @@ def buscador_content():
                         <button onclick="eliminarProducto({info[2]})" class="eliminar">Eliminar</button>
                     </div>
                 """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+
+@app.route('/api/buscador_season', methods=['POST'])
+def buscador_season():
+    informacion = request.get_json()
+    buscar = informacion.get('buscar', '')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            
+            sql_query = """
+                SELECT season_specification.season, season_specification.Id_season FROM season_specification 
+                WHERE season_specification.season LIKE :buscar;
+            """
+            result = connection.execute(text(sql_query), {"buscar": f"%{buscar}%"})
+            contenido = result.fetchall()
+
+            # Construcción de la tabla HTML con los resultados
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temporada</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[1]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[1]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
             
             return Response(html, mimetype='text/html')
     except Exception as e:
@@ -476,18 +547,12 @@ def registrar_contenido():
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
 
-@app.route('/registrar_contactos', methods=['POST'])
-def registrar_contactos():
+@app.route('/registrar_season', methods=['POST'])
+def registrar_season():
     init_db()
 
     data = request.get_json()
-    facebook = data.get('facebook')
-    instagram = data.get('instagram')
-    tik_tok = data.get('tik_tok')
-    email = data.get('email')
-    twitter = data.get('twitter')
-    whatsapp = data.get('whatsapp')
-    phone = data.get('phone')
+    temporada = data.get('temporada')
 
     #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
@@ -498,19 +563,12 @@ def registrar_contactos():
             connection.execute(text("START TRANSACTION;"))
 
             sql_query = """
-                INSERT INTO `contacts` (`Facebook`, `Instagram`, `Tik_tok`, `Email`, `Twitter`, `Whatsapp`, `Phone`) 
-                VALUES (:facebook, :instagram, :tik_tok, :email, :twitter, :whatsapp, :phone);
+                INSERT INTO `season_specification` (`season`) VALUES (:temporada);
             """
 
             # Ejecutar la consulta con los datos
             connection.execute(text(sql_query), {
-                "facebook": facebook,
-                "instagram": instagram,
-                "tik_tok": tik_tok,
-                "email": email,
-                "twitter": twitter,
-                "whatsapp": whatsapp,
-                "phone": phone
+                "temporada": temporada
             })
 
             # Confirmar la transacción
@@ -847,6 +905,47 @@ def buscador_contacto_edit():
         print(f"Error en la consulta: {e}")
         return Response("Error 404", mimetype='text/html')
     
+@app.route('/api/buscador_season_edit', methods=['POST'])
+def buscador_season_edit():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT season_specification.season, season_specification.Id_season FROM season_specification WHERE season_specification.Id_season=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            html = f"""
+            <span class="cerrar">&times;</span>
+            <div class="alinear">
+                <h1>
+                    Registro de temporada
+                </h1>
+                <br>
+                <label for="temporada">
+                    <h2>
+                        Temporada
+                    </h2>
+                    <br>
+                    <input type="text" id="temporadad" placeholder="Temporada" value="{contenido[0]}">
+                </label>
+                <br>
+                <button id="registrar" onclick="editarsqltemporada({contenido[1]})">Actualizar</button>
+            </div>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+    
 #Actualizar datos
 @app.route('/actualizar_contenido', methods=['POST'])
 def actualizar_contenido():
@@ -932,6 +1031,45 @@ def actualizar_contacto():
                 "twitter": twitter,
                 "whatsapp": whatsapp,
                 "phone": phone,
+                "id":id
+            })
+
+            # Finalizar transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Actualizacion exitosa"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al actualizar: {str(e)}"}), 500
+
+
+@app.route('/actualizar_temporada', methods=['POST'])
+def actualizar_temporada():
+    init_db()
+
+    data = request.get_json()
+    season = data.get('season')
+    id = data.get('id')
+
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                UPDATE `season_specification` SET `season_specification`.`season` = :season WHERE `season_specification`.`Id_season` = :id;
+            """
+
+            # Ejecutar la consulta con los datos
+            connection.execute(text(sql_query), {
+                "season": season,
                 "id":id
             })
 
@@ -1052,6 +1190,16 @@ def administrador_content():
 @login_required('administrador')
 def administrador_user():
     response = make_response(render_template('administracion_users.html'))
+    # Control de caché
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+@app.route('/administrador')
+@login_required('administrador')
+def administrador():
+    response = make_response(render_template('administracion_inicio.html'))
     # Control de caché
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'

@@ -226,15 +226,20 @@ button:hover {
 .modal-contenido {
     background-color: #fff;
     margin: 5% auto;
-    padding: 2vw;
     border: 1px solid #888;
     width: 80%;
     max-width: 80%;
     text-align: center;
     border-radius: 1vw;
     min-height: 80%;
+    padding: 2vw;
+    overflow: auto;
 }
-
+.alinear{
+    position: absolute;
+    top: 30%;   
+    width: 75%;
+}
 .cerrar {
     color: #aaa;
     float: right;
@@ -244,7 +249,7 @@ button:hover {
 }
 
 #registrar {
-    background-color: #dc3545;
+    background-color: #2E4596;
     text-decoration: none;
     border-radius: 0.5vw;
     text-align: center;
