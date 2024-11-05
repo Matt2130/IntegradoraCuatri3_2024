@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-11-2024 a las 04:14:15
+-- Tiempo de generación: 05-11-2024 a las 03:15:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -162,16 +162,18 @@ CREATE TABLE `users` (
   `Name` varchar(50) NOT NULL,
   `Surname` varchar(25) NOT NULL,
   `Lastname` varchar(25) NOT NULL,
-  `Rol` varchar(25) NOT NULL
+  `Rol` varchar(25) NOT NULL,
+  `Estado` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`Id_user`, `User`, `Password`, `Email`, `Name`, `Surname`, `Lastname`, `Rol`) VALUES
-(21, 'testuser', 'cliente', 'cliente.hotmail.com', 'Test', 'User', 'Example', 'cliente'),
-(39, 'admin', 'admin', 'admin@hotmail.com', 'Mario', 'a', 'z', 'administrador');
+INSERT INTO `users` (`Id_user`, `User`, `Password`, `Email`, `Name`, `Surname`, `Lastname`, `Rol`, `Estado`) VALUES
+(21, 'testuser', 'cliente', 'cliente.hotmail.com', 'Test', 'User', 'Example', 'cliente', 'Activo'),
+(39, 'admin', 'admin', 'admin@hotmail.com', 'Mario', 'a', 'z', 'administrador', 'Activo'),
+(40, 'testuser', 'testpassword', 'testuser@example.com', 'Test', 'User', 'Example', 'cliente', 'Inactivo');
 
 --
 -- Índices para tablas volcadas
@@ -231,7 +233,7 @@ ALTER TABLE `season_specification`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `Id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `Id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Restricciones para tablas volcadas

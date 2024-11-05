@@ -334,7 +334,7 @@ def tabla_users():
                         <td>{info[4]}</td>
                         <td>{info[5]}</td>
                         <td>
-                            <button onclick="editarProducto({info[6]})" class="editar">Editar</button>
+                            <button onclick="editarProducto({info[6]})" class="editar">Editar/Más detalles</button>
                             <button onclick="eliminarProducto({info[6]})" class="eliminar">Eliminar</button>
                         </td>
                     </tr>
@@ -374,6 +374,7 @@ def contenido_inicio_administracion():
             return Response(html, mimetype='text/html')
     except:
         return Response("Error 404", mimetype='text/html')
+
 #Buscador tablas
 @app.route('/api/buscador_content', methods=['POST'])
 def buscador_content():
@@ -458,6 +459,135 @@ def buscador_season():
         print(f"Error en la consulta: {e}")
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/api/buscador_users', methods=['POST'])
+def buscador_users():
+    informacion = request.get_json()
+    buscar = informacion.get('buscar', '')
+    
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT users.User, users.Email, users.Name, users.Surname, users.Lastname, users.Rol, users.Id_user
+                FROM users
+                WHERE users.User LIKE :buscar
+                OR users.Email LIKE :buscar
+                OR users.Name LIKE :buscar
+                OR users.Surname LIKE :buscar
+                OR users.Lastname LIKE :buscar
+                OR users.Rol LIKE :buscar
+                OR users.Estado LIKE :buscar;
+            """
+            result = connection.execute(text(sql_query), {"buscar": f"%{buscar}%"})
+            contenido = result.fetchall()
+            
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Correo</th>
+                        <th>Nombre</th>
+                        <th>Apellido paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Rol</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>{info[1]}</td>
+                        <td>{info[2]}</td>
+                        <td>{info[3]}</td>
+                        <td>{info[4]}</td>
+                        <td>{info[5]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[6]})" class="editar">Editar/Más detalles</button>
+                            <button onclick="eliminarProducto({info[6]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
+@app.route('/api/buscador_productos', methods=['POST'])
+def buscador_productos():
+    informacion = request.get_json()
+    buscar = informacion.get('buscar', '')
+    
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT products.Name, products.Model, products.Size, products.Material_composition, products.Price_per_unit, products.Color, products.Id_product FROM products
+                INNER JOIN season_specification ON products.FK_id_season=season_specification.Id_season INNER JOIN users ON products.FK_Id_user=users.Id_user
+                WHERE 
+                    products.Model LIKE :buscar OR
+                    season_specification.season LIKE :buscar OR
+                    products.Size LIKE :buscar OR
+                    products.Name LIKE :buscar OR
+                    products.Description LIKE :buscar OR
+                    products.Price_per_unit LIKE :buscar OR
+                    products.Color LIKE :buscar OR
+                    users.User LIKE :buscar;
+            """
+            result = connection.execute(text(sql_query), {"buscar": f"%{buscar}%"})
+            contenido = result.fetchall()
+            
+            html = """
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Modelo</th>
+                        <th>Tamaño</th>
+                        <th>Material de composisión</th>
+                        <th>Precio</th>
+                        <th>Color</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for info in contenido:
+                html += f"""
+                    <tr>
+                        <td>{info[0]}</td>
+                        <td>{info[1]}</td>
+                        <td>{info[2]}</td>
+                        <td>{info[3]}</td>
+                        <td>{info[4]}</td>
+                        <td>{info[5]}</td>
+                        <td>
+                            <button onclick="editarProducto({info[6]})" class="detalles">Detalles</button>
+                            <button onclick="editarProducto({info[6]})" class="editar">Editar</button>
+                            <button onclick="eliminarProducto({info[6]})" class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                    
+                """
+
+            html += """
+                </tbody>
+            </table>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
 #Registros
 @app.route('/registro_usuario', methods=['POST'])
 def signup():
@@ -471,7 +601,7 @@ def signup():
     password = data.get('password')
     surname = data.get('surname')
 
-    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
     # Intento de insertar datos
     try:
@@ -480,8 +610,8 @@ def signup():
             connection.execute(text("START TRANSACTION;"))
 
             sql_query = """
-                INSERT INTO users (User, Password, Email, Name, Surname, Lastname, Rol)
-                VALUES (:username, :password, :email, :name, :surname, :lastname, 'cliente')
+                INSERT INTO users (User, Password, Email, Name, Surname, Lastname, Rol, Estado)
+                VALUES (:username, :password, :email, :name, :surname, :lastname, 'cliente', 'Activo')
             """
             print(f"Ejecutando consulta: {sql_query}")
 
@@ -591,7 +721,7 @@ def eliminar_season():
     identificador = request.get_json()
     id = identificador.get('parametro')
     
-    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
     # Intento de insertar datos
     try:
@@ -628,7 +758,7 @@ def eliminar_usuarios():
     identificador = request.get_json()
     id = identificador.get('parametro')
     
-    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
     # Intento de insertar datos
     try:
@@ -665,7 +795,7 @@ def eliminar_contenido():
     identificador = request.get_json()
     id = identificador.get('parametro')
     
-    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
     # Intento de insertar datos
     try:
@@ -702,7 +832,7 @@ def eliminar_contacto():
     identificador = request.get_json()
     id = identificador.get('parametro')
     
-    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
     # Intento de insertar datos
     try:
@@ -739,7 +869,7 @@ def eliminar_producto():
     identificador = request.get_json()
     id = identificador.get('parametro')
     
-    time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
 
     # Intento de insertar datos
     try:
@@ -833,7 +963,7 @@ def buscador_contacto_edit():
             html = f"""
                 <span class="cerrar">&times;</span>
             <h1>
-                Registrar Contactos
+                Editar Contactos
             </h1>
             <br>
             <div id="formulario_contactos">
@@ -926,7 +1056,7 @@ def buscador_season_edit():
             <span class="cerrar">&times;</span>
             <div class="alinear">
                 <h1>
-                    Registro de temporada
+                    Edición de temporada
                 </h1>
                 <br>
                 <label for="temporada">
@@ -946,6 +1076,88 @@ def buscador_season_edit():
         print(f"Error en la consulta: {e}")
         return Response("Error 404", mimetype='text/html')
     
+@app.route('/api/buscador_users_edit', methods=['POST'])
+def buscador_users_edit():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT users.User, users.Email, users.Name, users.Surname, users.Lastname, users.Rol, users.Estado, users.Id_user FROM users WHERE users.Id_user=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            html = f"""
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h1>Datos del usuario</h1>
+            <h2>Usuario</h2>
+            <p>{contenido[0]}</p>
+            <br>
+            <h2>Email</h2>
+            <p>{contenido[1]}</p>
+            <br>
+            <h2>Nombre</h2>
+            <p>{contenido[2]}</p>
+            <br>
+            <h2>Apellido paterno</h2>
+            <p>{contenido[3]}</p>
+            <br>
+            <h2>Apellido materno</h2>
+            <p>{contenido[4]}</p>
+            <br>
+            """
+            if contenido[5]=="administrador":
+                html+=f"""
+                    <h2 for="estado">Rol</h2>
+                    <select id="rol" name="rol">
+                        <option value="administrador" selected>Administrador</option>
+                        <option value="cliente">Cliente</option>
+                    </select>
+                    <br>
+                """
+            else:
+                html+=f"""
+                    <h2 for="estado">Rol:</h2>
+                    <select id="rol" name="rol">
+                        <option value="administrador">Administrador</option>
+                        <option value="cliente" selected>Cliente</option>
+                    </select>
+                    <br>
+                """
+            if contenido[6]=="Activo":
+                html+=f"""
+                    <h2 for="estado">Estado:</h2>
+                    <select id="estado" name="estado">
+                        <option value="Activo" selected>Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                    <br>
+                """
+            else:
+                html+=f"""
+                    <h2 for="estado">Estado:</h2>
+                    <select id="estado" name="estado">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo" selected>Inactivo</option>
+                    </select>
+                    <br>
+                """
+            html+=f"""
+            <br>
+            <button id="registrar" onclick="editarsqlcontenido({contenido[7]})">Actualizar</button>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+
 #Actualizar datos
 @app.route('/actualizar_contenido', methods=['POST'])
 def actualizar_contenido():
@@ -1046,7 +1258,6 @@ def actualizar_contacto():
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al actualizar: {str(e)}"}), 500
 
-
 @app.route('/actualizar_temporada', methods=['POST'])
 def actualizar_temporada():
     init_db()
@@ -1092,9 +1303,7 @@ def login():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
-    print(email)
-    print(password)
-    time.sleep(3)
+    #time.sleep(3)
     try:
         with engine.connect() as connection:
             sql_query = """
@@ -1113,7 +1322,7 @@ def login():
                 
                 # Redirige según el rol
                 if session['permiso_usuario'] == 'administrador':
-                    return jsonify({"redirect": "/administrador_productos"})
+                    return jsonify({"redirect": "/administrador"})
                 else:
                     return jsonify({"redirect": "/"})
             else:
@@ -1217,4 +1426,5 @@ def inicio_usuario():
 # Inicio del servidor
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

@@ -49,3 +49,90 @@ function eliminarProducto(param) {
         });
     }
 }
+/////////////////////////////////////////////////
+///Buscador
+function buscador() {
+    const buscar = document.getElementById('buscador').value;
+
+    fetch('/api/buscador_users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ buscar: buscar })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text();
+    })
+    .then(html => {
+        // Muestra los resultados HTML en el contenedor
+        const resultsContainer = document.getElementById('administracion-tabla');
+        resultsContainer.innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+//Modal para el registro
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtiene el modal
+    var modal = document.getElementById("miModal");
+
+    // Obtiene el botón que abre la modal
+    var btn = document.getElementById("abrirModal");
+
+    // Obtiene el elemento <span> que cierra la modal
+    var span = document.getElementsByClassName("cerrar")[0];
+
+    // Cuando el usuario hace clic en el botón, se abre la modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // Cuando el usuario hace clic en <span> (x), se cierra la modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+});
+//Modal para edición
+function editarProducto(id) {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "block"; // Muestra el modal
+
+    fetch('/api/buscador_users_edit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text(); // Cambiado a text() para manejar HTML
+    })
+    .then(html => {
+        // Inserta el HTML en el modal
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en la edición';
+    });
+}
+
+function cerrarModal() {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    var modal = document.getElementById("miModal2");
+    if (event.target === modal) {
+        cerrarModal();
+    }
+}

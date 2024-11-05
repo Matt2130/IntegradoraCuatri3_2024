@@ -50,3 +50,30 @@ function eliminarProducto(param) {
         });
     }
 }
+/////////////////////////////////////////////////////////////////////////////////////////
+//Buscador
+function buscador() {
+    const buscar = document.getElementById('buscador').value;
+
+    fetch('/api/buscador_productos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ buscar: buscar })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text();  // Cambiado de .json() a .text() para recibir HTML
+    })
+    .then(html => {
+        // Muestra los resultados HTML en el contenedor
+        const resultsContainer = document.getElementById('administracion-tabla');
+        resultsContainer.innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
