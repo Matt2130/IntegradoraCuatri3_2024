@@ -714,7 +714,8 @@ def registrar_season():
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
 
 #ruta para guardar las imagenes subidas
-app.config['UPLOAD_FOLDER'] = 'Integradora/static/image/imagenes_productos' 
+app.config['UPLOAD_FOLDER'] = 'static/image/imagenes_productos' 
+
 @app.route('/registrar_producto', methods=['POST'])
 def registrar_producto():
     init_db()
@@ -737,7 +738,7 @@ def registrar_producto():
     
     image.save(image_path)
 
-    image_url = url_for('static', filename=f'images_productos{unique_filename}', _external=True)
+    image_url = url_for('static', filename=f'image/imagenes_productos/{unique_filename}', _external=True)
 
     # evuelve la respuesta con la URL de la imagen
     return jsonify({"message": "Imagen guardada exitosamente", "image_url": image_url}), 200
@@ -1477,6 +1478,14 @@ def administrador():
 @app.route('/cliente')
 def cliente():
     return render_template('index.html')
+
+@app.route('/catalogo')
+def catalogo():
+    return render_template('catalogo.html')
+
+@app.route('/producto')
+def producto():
+    return render_template('producto.html')
 
 @app.route('/inicio_usuario')
 def inicio_usuario():
