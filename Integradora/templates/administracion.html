@@ -39,26 +39,50 @@
         <div class="modal-contenido">
             <span class="cerrar">&times;</span>
             <h1>
-                Registro de contenido
+                Registro de producto
             </h1>
-            <br>
-            <label for="titulo">
-                <h2>
-                    Titulo
-                </h2>
+            <div class="izquierda">
+                <label for="image">Imagen del producto:
+                    <input type="file" name="" id="image" accept="image/">
+                </label>
                 <br>
-                <input type="text" id="titulo" placeholder="Titulo">
-            </label>
-            <br>
-            <label for="descripcion">
-                <h2>
-                    Descripción
-                </h2>
+                <label for="modelo">Modelo:
+                    <input type="text" name="" id="modelo">
+                </label>
                 <br>
-                <textarea name="descripcion" id="descripcion" placeholder="Descripcion"></textarea>
-            </label>
+                <label for="temporada">Temporada:
+                    <input type="text" name="" id="temporada">
+                </label>
+                <br>
+                <label for="tamaño">Tamaño:
+                    <input type="text" name="" id="tamaño">
+                </label>
+                <br>
+                <label for="nombre">Nombre:
+                    <input type="text" name="" id="nombre">
+                </label>
+                <br>
+            </div>
+            <div class="derecha">
+                <label for="descripcion">Descripción:
+                    <textarea name="" id="descripcion"></textarea>
+                </label>
+                <br>
+                <label for="precio_lot">Precio (lote):
+                    <input type="number" name="" id="precio_lot">
+                </label>
+                <br>
+                <label for="color">Color:
+                    <input type="text" name="" id="color">
+                </label>
+                <br>
+                <label for="materia">Material de composisión:
+                    <input type="text" name="" id="materia">
+                </label>
+                <br>
+            </div>
             <br>
-            <button id="registrar" onclick="registrarcontenido()">Registrar</button>
+            <button id="registrar" onclick="registrarproducto()">Registrar</button>
         </div>
     </div>
 

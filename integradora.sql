@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-11-2024 a las 03:15:06
+-- Tiempo de generación: 07-11-2024 a las 05:28:48
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -86,21 +86,6 @@ INSERT INTO `content` (`Id_contenido`, `Title`, `Describe`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pictures`
---
-
-CREATE TABLE `pictures` (
-  `Id_picture` int(11) NOT NULL,
-  `URL_file` varchar(250) NOT NULL,
-  `Estado` varchar(30) NOT NULL,
-  `Titulo` varchar(100) NOT NULL,
-  `Descripcion` mediumtext NOT NULL,
-  `FK_Id_product` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `products`
 --
 
@@ -114,6 +99,7 @@ CREATE TABLE `products` (
   `Description` varchar(500) NOT NULL,
   `Price_per_unit` double NOT NULL,
   `Color` varchar(50) NOT NULL,
+  `url_imagen` tinytext NOT NULL,
   `FK_Id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -121,11 +107,13 @@ CREATE TABLE `products` (
 -- Volcado de datos para la tabla `products`
 --
 
-INSERT INTO `products` (`Id_product`, `Material_composition`, `Model`, `FK_id_season`, `Size`, `Name`, `Description`, `Price_per_unit`, `Color`, `FK_Id_user`) VALUES
-(11, 'algodón', 'clásico', 12, 'M', 'sábanas', 'Sábanas suaves de algodón', 200, 'blanco', 39),
-(12, 'poliéster', 'premium', 11, 'L', 'edredón', 'Edredón cálido para invierno', 350, 'azul', 39),
-(13, 'algodón y poliéster', 'moderno', 10, 'S', 'cobertor', 'Cobertor ligero para verano', 150, 'gris', 39),
-(14, 'lana', 'lujo', 1, 'XL', 'manta', 'Manta de lana para otoño', 250, 'beige', 39);
+INSERT INTO `products` (`Id_product`, `Material_composition`, `Model`, `FK_id_season`, `Size`, `Name`, `Description`, `Price_per_unit`, `Color`, `url_imagen`, `FK_Id_user`) VALUES
+(11, 'algodón', 'clásico', 12, 'M', 'sábanas', 'Sábanas suaves de algodón', 200, 'blanco', '', 39),
+(12, 'poliéster', 'premium', 11, 'L', 'edredón', 'Edredón cálido para invierno', 350, 'azul', '', 39),
+(13, 'algodón y poliéster', 'moderno', 10, 'S', 'cobertor', 'Cobertor ligero para verano', 150, 'gris', '', 39),
+(14, 'lana', 'lujo', 1, 'XL', 'manta', 'Manta de lana para otoño', 250, 'beige', '', 39),
+(16, '', '', 1, '', '', '', 0, '', '', 39),
+(17, '', '', 1, '', '', '', 0, '', '', 39);
 
 -- --------------------------------------------------------
 
@@ -180,13 +168,6 @@ INSERT INTO `users` (`Id_user`, `User`, `Password`, `Email`, `Name`, `Surname`, 
 --
 
 --
--- Indices de la tabla `pictures`
---
-ALTER TABLE `pictures`
-  ADD PRIMARY KEY (`Id_picture`),
-  ADD KEY `Id_product` (`FK_Id_product`);
-
---
 -- Indices de la tabla `products`
 --
 ALTER TABLE `products`
@@ -212,16 +193,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT de la tabla `pictures`
---
-ALTER TABLE `pictures`
-  MODIFY `Id_picture` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `Id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `season_specification`
@@ -238,12 +213,6 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `pictures`
---
-ALTER TABLE `pictures`
-  ADD CONSTRAINT `Pictures_ibfk_1` FOREIGN KEY (`FK_Id_product`) REFERENCES `products` (`Id_product`);
 
 --
 -- Filtros para la tabla `products`

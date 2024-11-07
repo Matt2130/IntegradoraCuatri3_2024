@@ -125,7 +125,8 @@ function registrartemporadao(){
         console.error('Error:', error);
         alert("Error al registrar: " + error.message);
     });
-}//Modal para edición
+}
+//Modal para edición
 function editarProducto(id) {
     var modal = document.getElementById("miModal2");
     modal.style.display = "block"; // Muestra el modal

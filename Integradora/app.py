@@ -713,6 +713,65 @@ def registrar_season():
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
 
+#ruta para guardar las imagenes subidas
+app.config['UPLOAD_FOLDER'] = 'Integradora/static/image/imagenes_productos' 
+@app.route('/registrar_producto', methods=['POST'])
+def registrar_producto():
+    init_db()
+
+    # Captura los datos del formulario
+    modelo = request.form.get('modelo')
+    temporada = request.form.get('temporada')
+    tamaño = request.form.get('tamaño')
+    nombre = request.form.get('nombre')
+    descripcion = request.form.get('descripcion')
+    precio_lot = request.form.get('precio_lot')
+    color = request.form.get('color')
+    materia = request.form.get('materia')
+    
+    image = request.files.get('image')
+    
+    unique_filename = "nombre_unico_generado_manualmente.jpg"
+
+    image_path = f"{app.config['UPLOAD_FOLDER']}/{unique_filename}"
+    
+    image.save(image_path)
+
+    image_url = url_for('static', filename=f'images_productos{unique_filename}', _external=True)
+
+    # evuelve la respuesta con la URL de la imagen
+    return jsonify({"message": "Imagen guardada exitosamente", "image_url": image_url}), 200
+    
+    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
+    '''
+    # Intento de insertar datos
+    try:
+        with engine.connect() as connection:
+            # Iniciar una transacción
+            connection.execute(text("START TRANSACTION;"))
+
+            sql_query = """
+                INSERT INTO `products` (`Material_composition`, `Model`, `FK_id_season`, `Size`, `Name`, `Description`, `Price_per_unit`, `Color`, `url_imagen`, `FK_Id_user`) VALUES ('', '', '1', '', '', '', '', '', '', '39');
+            """
+
+            # Ejecutar la consulta con los datos
+            connection.execute(text(sql_query), {
+                "temporada": temporada
+            })
+
+            # Confirmar la transacción
+            connection.execute(text("COMMIT;"))
+
+        return jsonify({"message": "Registro exitoso"}), 200
+    except Exception as e:
+        # Hacer rollback en caso de error
+        with engine.connect() as connection:
+            connection.execute(text("ROLLBACK;"))
+
+        # Manejo de errores (nimodillo)
+        return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
+    '''
+
 #Eliminación
 @app.route('/eliminar_season', methods=['POST'])
 def eliminar_season():
