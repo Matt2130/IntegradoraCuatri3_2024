@@ -730,34 +730,39 @@ def registrar_producto():
     color = request.form.get('color')
     materia = request.form.get('materia')
     
-    image = request.files.get('image')
-    
-    unique_filename = "nombre_unico_generado_manualmente.jpg"
 
-    image_path = f"{app.config['UPLOAD_FOLDER']}/{unique_filename}"
-    
-    image.save(image_path)
-
-    image_url = url_for('static', filename=f'image/imagenes_productos/{unique_filename}', _external=True)
-
-    # evuelve la respuesta con la URL de la imagen
-    return jsonify({"message": "Imagen guardada exitosamente", "image_url": image_url}), 200
-    
-    #time.sleep(5)  #Espera 5 segundos para testear pantalla de carga
-    '''
-    # Intento de insertar datos
     try:
         with engine.connect() as connection:
+            #Guarda la imagen
+            image = request.files.get('image')
+            
+            unique_filename = f"{modelo}.png"
+
+            image_path = f"{app.config['UPLOAD_FOLDER']}/{unique_filename}"
+            
+            image.save(image_path)
+
+            image_url = url_for('static', filename=f'image/imagenes_productos/{unique_filename}', _external=True)
             # Iniciar una transacción
             connection.execute(text("START TRANSACTION;"))
 
             sql_query = """
-                INSERT INTO `products` (`Material_composition`, `Model`, `FK_id_season`, `Size`, `Name`, `Description`, `Price_per_unit`, `Color`, `url_imagen`, `FK_Id_user`) VALUES ('', '', '1', '', '', '', '', '', '', '39');
+            INSERT INTO `products` (`Material_composition`, `Model`, `FK_id_season`, `Size`, `Name`, `Description`, `Price_per_unit`, `Color`, `url_imagen`, `FK_Id_user`) 
+            VALUES (:materia, :modelo, :temporada, :tamaño, :nombre, :descripcion, :precio_lot, :color, :image_url, :user);
             """
 
             # Ejecutar la consulta con los datos
             connection.execute(text(sql_query), {
-                "temporada": temporada
+                "temporada": temporada,
+                "tamaño": tamaño,
+                "nombre": nombre,
+                "descripcion": descripcion,
+                "precio_lot": precio_lot,
+                "color": color,
+                "materia": materia, 
+                "image_url": image_url,
+                "modelo":modelo,
+                "user":session['id_usuario']
             })
 
             # Confirmar la transacción
@@ -771,7 +776,9 @@ def registrar_producto():
 
         # Manejo de errores (nimodillo)
         return jsonify({"message": f"Error al registrar: {str(e)}"}), 500
-    '''
+    
+    # evuelve la respuesta con la URL de la imagen
+    #return jsonify({"message": f"Imagen guardada exitosamente. URL:{image_url}"}), 200
 
 #Eliminación
 @app.route('/eliminar_season', methods=['POST'])
