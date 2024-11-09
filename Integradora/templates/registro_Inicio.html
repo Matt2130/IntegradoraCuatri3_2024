@@ -11,7 +11,7 @@
 </head>
 <body>  
     <div class="main">
-        <input type="checkbox" id="chk" aria-hidden="true">
+        <input type="checkbox" id="chk" aria-hidden="true" {% if checkbox_checked %}checked{% endif %}>
         <div class="signup">
             <form id="signupForm">
                 <a id="atras" href="/"><img src="{{ url_for('static', filename='image/arrow_back.png') }}" alt="Regreso"></a>
