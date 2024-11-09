@@ -1498,6 +1498,11 @@ def producto():
 def inicio_usuario():
     return render_template('registro_Inicio.html')
 
+@app.route('/inicio_sesion')
+def iniciar_sesion():
+    checkbox_checked = True
+    return render_template('registro_Inicio.html', checkbox_checked=checkbox_checked)
+
 # Inicio del servidor
 if __name__ == '__main__':
     init_db()
