@@ -11,7 +11,7 @@ body{
 
 .main{
     width: 60vw;
-    height: 50vw;
+    height: 40vw;
     overflow: hidden;
     /* background: url("") no-repeat center / cover; */
     background: #A1A7BC;
@@ -79,10 +79,10 @@ label #icon{
 }
 
 input{
-    width: 50%;
+    width: 40%;
     height: 1vw;
     background: #e0dede;
-    font-size: 1rem;
+    font-size: .6rem;
     text-align: center;
     display: flex;
     margin: 20px auto;
@@ -115,19 +115,27 @@ button:hover{
 
 .login {
     height: 40vw;
-    background:#eee;
+    background:#eee ;
     border-radius: 10%;
-    transform: translateY(1vw);
+    transform: translateY(-8vw);
     transition: .8s ease-in-out;
 }
 
+.login input{
+    display: none;
+}
+.login button{
+    display: none;
+}
+
 #chk:checked ~ .login{
-    transform: translateY(-28vw);
+    transform: translateY(-32vw);
 }
 
 #chk:checked ~ .login label{
     transform: scale(1);
     margin: .5vw;
+    color: black;
 }
 #chk:checked ~ .login span{
     display: none;
@@ -135,4 +143,201 @@ button:hover{
 
 #chk:checked ~ .signup label{
     transform: scale(.8);
+    border-radius: 15px;
+    background-color: #ebebeb;
+    width: min-content;
+    padding: 0 1vw;
+    margin: 0 auto; 
 }
+
+#chk:checked ~ .login input{
+    display: block;
+}
+
+#chk:checked ~ .login button{
+    display: block;
+}
+
+
+
+@media screen and (min-width:1350px) and (max-width:1400px){
+    .main{
+        width: 60vw;
+        height: 40vw;
+        overflow: hidden;
+    }
+    .login {
+        height: 40vw;
+        transform: translateY(-2vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 40%;
+        height: 1vw;
+        background: #e0dede;
+        font-size: .9rem;
+        text-align: center;
+        display: flex;
+        margin: 20px auto;
+        padding: .5vw;
+        border: none;
+        border-radius: 5px;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-24vw);
+    }
+}
+
+@media screen and (min-width:740px) and (max-width:1350px){
+    .main{
+        width: 60vw;
+        height: 45vw;
+        overflow: hidden;
+    }
+    
+    .login {
+        height: 40vw;
+        transform: translateY(.5vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 40%;
+        height: 1.5vw;
+        font-size: .9rem;
+        margin: 1vw auto;
+        padding: .5vw;
+    }
+    button{
+        width: 30%;
+        height: 3vw;
+        margin: 1vw auto;
+        font-size: 1em;
+        margin-top: 1vw;
+    }
+    .login label{
+        font-size: 1.8em;
+        margin:1vw;
+        transition: .5s ease-in-out;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-26vw);
+    }
+}
+@media screen and (min-width:490px) and (max-width:740px){
+    .main{
+        width: 70%;
+        height: 55vw;
+        overflow: hidden;
+    }
+    
+    .login {
+        height: 40vw;
+        transform: translateY(.5vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 50%;
+        height: 2vw;
+        font-size: .9rem;
+        margin: 1.5vw auto;
+        padding: .5vw;
+    }
+    button{
+        width: 30%;
+        height: 3.5vw;
+        margin: 1vw auto;
+        font-size: 1em;
+        margin-top: 1vw;
+    }
+    .login label{
+        font-size: 1.5em;
+        display: inline-block;
+        margin: 0 auto;
+    }
+    #chk:checked ~ .login label{
+        transform: scale(1);
+        display: block;
+        margin: .5vw auto;
+        justify-content: center;
+        display: flex;
+        margin:4vw;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-35vw);
+        height: 60vw;
+        margin: 0 auto;
+    }
+    .login button{
+        width: max-content;
+    }
+}
+
+@media screen and (max-width:490px){
+    .main{
+        width: 70vw;
+        height: 100vw;
+        overflow: hidden;
+    }
+    #logo{
+        width: 20vw;
+    }
+
+    #atras img{
+        width: 6vw;
+    }
+    
+    .login {
+        width: 90%;
+        height: 40vw;
+        margin: 0 auto;
+        transform: translateY(1vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 80%;
+        height: 4vw;
+        font-size: .9rem;
+        margin: 3vw auto;
+        padding: .5vw;
+    }
+    button{
+        width: max-content;
+        height: 6vw;
+        margin: 1vw auto;
+        font-size: 1em;
+        margin-top: 1vw;
+    }
+    .login label{
+        font-size: 1.2em;
+        display: inline-block;
+        margin: 0 auto;
+        
+    }
+    #chk:checked ~ .login label{
+        transform: scale(1);
+        display: block;
+        margin: .5vw auto;
+        justify-content: center;
+        display: flex;
+        margin:4vw;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-60vw);
+        width: 90%;
+        height: 60vw;
+        margin: 0 auto;
+    }
+    .login button{
+        width: max-content;
+    }
+
+}
+/*  0 320 360 portrait
+    480 640 768 landscape
+    1024 1200 1400 no hd
+    1920 hd 
+    
+    @media screen and (min-width:1024px) and (max-width:1400px)
+    @media screen and (min-width:480px) and (max-width:768px) and (orientation:landscape)
+    @media screen and (min-width:320px) and (max-width:480px) and (orientation:portrait)
+*/
