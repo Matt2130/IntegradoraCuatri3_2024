@@ -16,8 +16,8 @@
             <form id="signupForm">
                 <a id="atras" href="/"><img src="{{ url_for('static', filename='image/arrow_back.png') }}" alt="Regreso"></a>
                 <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="Logo" id="logo">
-                <label for="chk" aria-hidden="true">Registrar</label>
-                <input type="text" id="name" placeholder="Nombre">
+                <label for="chk" aria-hidden="true">Registrarse</label>
+                <input type="text" id="name" placeholder="Nombre(s)">
                 <input type="text" id="lastname" placeholder="Apellido paterno">
                 <input type="text" id="surname" placeholder="Apellido materno">
                 <input type="text" id="username" name="txt" placeholder="Nombre de Usuario">
@@ -31,7 +31,7 @@
         </div>
         <div class="login">
             <form id="loginForm" method="POST">
-                <label for="chk" aria-hidden="true"><span>Tienes una cuenta? ,&nbsp;</span>Inicia Sesión</label>
+                <label for="chk" aria-hidden="true"><span>Tienes una cuenta?,&nbsp;</span>Inicia Sesión</label>
                 <input type="email" id="email2" name="email" placeholder="Email" required="">
                 <input type="password" id="password2" name="pswd" placeholder="Contraseña" required="">
                 <button type="submit">Iniciar Sesion</button>
