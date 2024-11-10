@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
 </head>
 <body>
     <header id="header">
@@ -30,6 +30,7 @@
             <button id="registrarse" onclick="window.location.href='/inicio_usuario'">Registrarse</button>
         </nav>
     </header>
+
     <main>
         <div id="container">
             <h1 class="titulo">Productos</h1>
@@ -38,95 +39,26 @@
                     <img src="{{ url_for('static', filename='image/search.png') }}" alt="Buscar" class="search-icon">
                 </form>
             </div>
-            <div id="catalogo">
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
-                <div class="producto">
-                    <a href="">
-                        <div id="imagen">
-                            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="">
-                        </div>
-                        <div id="info">
-                            <h3 id="nombre-producto">Franela</h3>
-                            <p id="color-modelo">Rojo, Krisban</p>
-                            <strong id="precio">$900.00</strong>
-                        </div>
-                    </a>
-                </div>
+            <div id="catalogo" id="catalogo">
                 
+                <!--
+                        <div class="producto">
+                            <a href="">
+                                <div id="imagen">
+                                    <img src="" alt="">
+                                </div>
+                                <div id="info">
+                                    <h3 id="nombre-producto">Franela</h3>
+                                    <p id="color-modelo">Rojo, Krisban</p>
+                                    <strong id="precio">$900.00</strong>
+                                </div>
+                            </a>
+                        </div>
+                -->
             </div>
         </div>
     </main>
+
     <footer>
         <div id="menu">
             <p>

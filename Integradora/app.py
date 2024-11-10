@@ -112,6 +112,37 @@ def texto_valores():
     except:
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/api/mostrador_productos')
+def mostrador_productos():
+    try:
+        init_db()
+        with engine.connect() as connection:
+            result = connection.execute(text('SELECT products.url_imagen, products.Name, products.Color, products.Price_per_unit FROM products;'))
+            contenido = result.fetchall()
+            
+            html = ""
+
+            for info in contenido:
+                direccion_imagen= url_for('static', filename=f'image/imagenes_productos/{info[0]}', _external=True)
+                html += f"""
+                        <div class="producto">
+                            <a href="">
+                                <div id="imagen">
+                                    <img src="{direccion_imagen}" alt="{info[0]}">
+                                </div>
+                                <div id="info">
+                                    <h3 id="nombre-producto">{info[1]}</h3>
+                                    <p id="color-modelo">{info[2]}</p>
+                                    <strong id="precio">${info[3]}</strong>
+                                </div>
+                            </a>
+                        </div>
+                """
+
+            return Response(html, mimetype='text/html')
+    except:
+        return Response("Error 404", mimetype='text/html')
+
 #Tablas
 @app.route('/api/tabla_productos')
 def tabla_productos():
@@ -146,7 +177,7 @@ def tabla_productos():
                         <td>{info[4]}</td>
                         <td>{info[5]}</td>
                         <td>
-                            <button onclick="editarProducto({info[6]})" class="detalles">Detalles</button>
+                            <button onclick="detallesProducto({info[6]})" class="detalles">Detalles</button>
                             <button onclick="editarProducto({info[6]})" class="editar">Editar</button>
                             <button onclick="eliminarProducto({info[6]})" class="eliminar">Eliminar</button>
                         </td>
@@ -742,7 +773,7 @@ def registrar_producto():
             
             image.save(image_path)
 
-            image_url = url_for('static', filename=f'image/imagenes_productos/{unique_filename}', _external=True)
+            #image_url = url_for('static', filename=f'image/imagenes_productos/{unique_filename}', _external=True)
             # Iniciar una transacción
             connection.execute(text("START TRANSACTION;"))
 
@@ -760,7 +791,7 @@ def registrar_producto():
                 "precio_lot": precio_lot,
                 "color": color,
                 "materia": materia, 
-                "image_url": image_url,
+                "image_url": unique_filename,
                 "modelo":modelo,
                 "user":session['id_usuario']
             })
@@ -1220,6 +1251,141 @@ def buscador_users_edit():
             <button id="registrar" onclick="editarsqlcontenido({contenido[7]})">Actualizar</button>
             """
             
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+
+@app.route('/api/buscador_producto_edit', methods=['POST'])
+def buscador_producto_edit():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT products.Material_composition, products.Model, season_specification.season, products.Size, products.Name, products.Description, products.Price_per_unit, products.Color, products.url_imagen, users.User, products.Id_product FROM products INNER JOIN season_specification ON products.FK_id_season=season_specification.Id_season INNER JOIN users ON products.FK_Id_user=users.Id_user WHERE products.Id_product=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            direccion_imagen= url_for('static', filename=f'image/imagenes_productos/{contenido[8]}', _external=True)
+            
+            html = f"""
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h1>Edición de producto</h1>
+
+            <div class="izquierda">
+                <label for="image">Imagen del producto:
+                    <input type="file" name="image" id="image" accept="image/*">
+                </label>
+                <br>
+                <img src="{direccion_imagen}" alt="{contenido[8]}" style="width:300px;height:auto;">
+                <br>
+                <label for="modelo">Modelo:
+                    <input type="text" name="modelo" id="modelo" value="{contenido[1]}">
+                </label>
+                <br>
+                <label for="temporada">Temporada:
+                    <input type="text" name="temporada" id="temporada" value="{contenido[2]}">
+                </label>
+                <br>
+                <label for="tamaño">Tamaño:
+                    <input type="text" name="tamaño" id="tamaño" value="{contenido[3]}">
+                </label>
+                <br>
+                <label for="nombre">Nombre:
+                    <input type="text" name="nombre" id="nombre" value="{contenido[4]}">
+                </label>
+                <br>
+            </div>
+
+            <div class="derecha">
+                <label for="descripcion">Descripción:
+                    <textarea name="descripcion" id="descripcion">{contenido[5]}</textarea>
+                </label>
+                <br>
+                <label for="precio_lot">Precio (lote):
+                    <input type="number" name="precio_lot" id="precio_lot" value="{contenido[6]}">
+                </label>
+                <br>
+                <label for="color">Color:
+                    <input type="text" name="color" id="color" value="{contenido[7]}">
+                </label>
+                <br>
+                <label for="materia">Material de composición:
+                    <input type="text" name="materia" id="materia" value="{contenido[0]}">
+                </label>
+                <br>
+            </div>
+
+            <br>
+            <button id="registrar" onclick="editarproducto({contenido[10]})">Editar</button>
+            """
+
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+
+#Solisitar datos para pantalla de detalles
+@app.route('/api/buscador_producto_dettalles', methods=['POST'])
+def buscador_producto_dettalles():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT products.Material_composition, products.Model, season_specification.season, products.Size, products.Name, products.Description, products.Price_per_unit, products.Color, products.url_imagen, users.User FROM products INNER JOIN season_specification ON products.FK_id_season=season_specification.Id_season INNER JOIN users ON products.FK_Id_user=users.Id_user WHERE products.Id_product=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            direccion_imagen= url_for('static', filename=f'image/imagenes_productos/{contenido[8]}', _external=True)
+            
+            html = f"""
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h1>Detalles de producto</h1>
+
+            <h2>Imagen</h2>
+            <img src="{direccion_imagen}" alt="{contenido[8]}" style="width:300px;height:auto;">
+
+            <h2>Modelo</h2>
+            <p>{contenido[1]}</p>
+
+            <h2>Temporada</h2>
+            <p>{contenido[2]}</p>
+
+            <h2>Tamaño</h2>
+            <p>{contenido[3]}</p>
+
+            <h2>Nombre</h2>
+            <p>{contenido[4]}</p>
+
+            <h2>Descripción</h2>
+            <p>{contenido[5]}</p>
+
+            <h2>Precio por unidad</h2>
+            <p>${contenido[6]}</p>
+
+            <h2>Color</h2>
+            <p>{contenido[7]}</p>
+
+            <h2>Composición del material</h2>
+            <p>{contenido[0]}</p>
+
+            <h2>Usuario que lo registro</h2>
+            <p>{contenido[9]}</p>
+            """
             return Response(html, mimetype='text/html')
     except Exception as e:
         print(f"Error en la consulta: {e}")

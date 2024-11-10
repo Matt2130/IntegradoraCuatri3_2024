@@ -147,4 +147,79 @@ function registrarproducto() {
         alert("Error al registrar: " + error.message);
     });
 }
+//Modal para detalles
+function detallesProducto(id) {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "block"; // Muestra el modal
 
+    fetch('/api/buscador_producto_dettalles', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text(); // Cambiado a text() para manejar HTML
+    })
+    .then(html => {
+        // Inserta el HTML en el modal
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en la edición';
+    });
+}
+
+function cerrarModal() {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    var modal = document.getElementById("miModal2");
+    if (event.target === modal) {
+        cerrarModal();
+    }
+}
+//Modal para editar
+function editarProducto(id) {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "block"; // Muestra el modal
+
+    fetch('/api/buscador_producto_edit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text(); // Cambiado a text() para manejar HTML
+    })
+    .then(html => {
+        // Inserta el HTML en el modal
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en la edición';
+    });
+}
+
+function cerrarModal() {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    var modal = document.getElementById("miModal2");
+    if (event.target === modal) {
+        cerrarModal();
+    }
+}
