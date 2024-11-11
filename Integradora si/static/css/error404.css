@@ -1,0 +1,35 @@
+#error404{
+    width: 50%;
+    margin: 8vw auto;
+    justify-content: center;
+    text-align: center;
+}
+
+h1{
+    font-size: 7em;
+    color: #ffd802;
+    font-weight: 100;
+    width: 100%;
+    display:inline;
+}
+
+p{
+    width: 100%;
+    font-size: 1em;
+    color: #444444;
+    display:inline;
+}
+
+#ini{
+    text-decoration: none;    
+    color: #d8b800;
+    display: inline-block;
+}
+
+#ini:hover{
+    color: #ffd802;
+    background-color: rgb(240, 240, 240);
+    border-radius: 15px;
+    padding: 0 1vw;
+    transition: .7s linear;
+}

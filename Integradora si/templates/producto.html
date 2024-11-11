@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>producto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+    <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</head>
+<body>
+    <header id="header">
+        <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="logo" id="logo">
+        <input type="checkbox" id="btn-menu"> <!-- Checkbox visible, no se muestra en la navegación -->
+        <label for="btn-menu">
+            <img src="{{ url_for('static', filename='image/options.svg') }}" alt="menu" id="iconmenu">
+        </label>
+        <nav id="menu">
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+            <button id="iniciar" onclick="window.location.href='/inicio_usuario'">Iniciar sesión</button>
+            <button id="registrarse" onclick="window.location.href='/inicio_usuario'">Registrarse</button>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div id="spa-imagenes">
+                k
+            </div>
+            <div id="spa-info">
+                <h2 id="nombre-producto"></h2>
+                <table>
+                    <tr>
+                        <td class="izq"><h3>Material:</h3><div id="material-producto"></div></td>
+                        <td class="der"><h3>Modelo:</h3><div id="modelo-producto"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="izq"><h3>Color:</h3><div class="info-text"  id="color-producto"></div></td>
+                        <td class="der"><h3>Tamaño:</h3><div class="info-text" id="tamaño-producto"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="izq"><h3>Temporada:</h3><div class="info-text" id="temporada-producto"></div></td>
+                        <td class="der"><h3>Precio:</h3><div class="info-text" id="precio-producto"></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><h3>Descripción:</h3><div class="info-text" id="descripcion-producto"></div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="comentarios">
+            <!-- sección para usuarios registrados -->
+            <div id="nuevocomentario">
+                <textarea name="" id="nuevo-comentario" placeholder="Escribe un comentario"></textarea>
+            </div>  
+            <!-- sección para todos los usuarios -->
+            <div class="comentario">
+                <div class="comentario-usuario">
+                    <p>Usuario</p>
+                </div>
+                <div class="comentario-texto">
+                    <p>Comentario</p>
+                </div>
+            </div>
+        </div>
+    </main>
+                    <style>
+                        td {
+                            max-width: 100px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            cursor: pointer;
+                        }
+                        td.expanded {
+                            white-space: normal;
+                            max-width: none;
+                        }
+                    </style>
+                    <script>
+                        function toggleText(element) {
+                            if (element.classList.contains('expanded')) {
+                                element.classList.remove('expanded');
+                                element.innerText = 'Texto largo que se acorta...';
+                            } else {
+                                element.classList.add('expanded');
+                                element.innerText = 'Texto largo que se acorta y se muestra completo al hacer clic.';
+                            }
+                        }
+                    </script>
+</body>
+</html>

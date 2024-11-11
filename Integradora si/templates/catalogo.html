@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+    <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
+</head>
+<body>
+    <header id="header">
+        <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="logo" id="logo">
+        <input type="checkbox" id="btn-menu"> <!-- Checkbox visible, no se muestra en la navegación -->
+        <label for="btn-menu">
+            <img src="{{ url_for('static', filename='image/options.svg') }}" alt="menu" id="iconmenu">
+        </label>
+
+        <nav id="menu">
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+            <button id="iniciar" onclick="window.location.href='/inicio_usuario'">Iniciar sesión</button>
+            <button id="registrarse" onclick="window.location.href='/inicio_usuario'">Registrarse</button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="container">
+            <h1 class="titulo">Productos</h1>
+            <div id="filtros">
+                    <input type="search" name="search" placeholder="Buscar entre los productos" id="buscador">
+                    <img src="{{ url_for('static', filename='image/search.png') }}" alt="Buscar" class="search-icon">
+                </form>
+            </div>
+            <div id="catalogo" id="catalogo">
+                
+                <!--
+                        <div class="producto">
+                            <a href="">
+                                <div id="imagen">
+                                    <img src="" alt="">
+                                </div>
+                                <div id="info">
+                                    <h3 id="nombre-producto">Franela</h3>
+                                    <p id="color-modelo">Rojo, Krisban</p>
+                                    <strong id="precio">$900.00</strong>
+                                </div>
+                            </a>
+                        </div>
+                -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div id="menu">
+            <p>
+                Menu
+            </p>
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+        </div>
+        <div id="contactos">
+
+        </div>
+        <div id="derechos_reservados">
+            <div>
+                <img src="{{ url_for('static', filename='image/LOGO.png') }}" alt="logo" id="logo">
+                <p>
+                    ®Blancos y confecciones de durango S.A. de C.V.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

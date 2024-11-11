@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blancos y Confecciones</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/administrador_contacto.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cargando.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+    <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/administracion_contactos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+</head>
+<body>
+    <header id="header">
+        <a href="/">
+            <img src="{{ url_for('static', filename='image/logo_sin_letras.png') }}" alt="logo" id="logo">
+        </a>
+
+        <input type="checkbox" id="btn-menu"> <!-- Checkbox visible, no se muestra en la navegación -->
+        <label for="btn-menu">
+            <img src="{{ url_for('static', filename='image/options.svg') }}" alt="menu" id="iconmenu">
+        </label>
+
+        <nav id="menu">
+            <ul>
+                <li><a href="/administrador_productos">Administrar</a></li>
+                <li><a href="/">Productos</a></li>
+            </ul>
+            <button id="salir">Cerrar secion</button>
+        </nav>
+    </header>
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loader"></div>
+    </div>
+    <!--Modal para registrar-->
+    <div id="miModal" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar">&times;</span>
+            <h1>
+                Registrar Contactos
+            </h1>
+            <br>
+            <div id="formulario_contactos">
+                <div id="izquierda">
+                    <label for="Facebook">
+                        <h2>
+                            Facebook
+                        </h2>
+                        <br>
+                        <input type="text" id="Facebook" placeholder="Facebook">
+                    </label>
+                    <br>
+                    <label for="Instagram">
+                        <h2>
+                            Instagram
+                        </h2>
+                        <br>
+                        <input type="text" id="Instagram" placeholder="Instagram">
+                    </label>
+                    <br>
+                    <label for="Tik_Tok">
+                        <h2>
+                            Tik Tok
+                        </h2>
+                        <br>
+                        <input type="text" id="Tik_Tok" placeholder="Tik Tok">
+                    </label>
+                    <br>
+                    <label for="Email">
+                        <h2>
+                            Email
+                        </h2>
+                        <br>
+                        <input type="text" id="Email" placeholder="Email">
+                    </label>
+                </div>
+                <div id="derecha">
+                    <label for="Twiter">
+                        <h2>
+                            Twitter
+                        </h2>
+                        <br>
+                        <input type="text" id="Twiter" placeholder="Twitter">
+                    </label>
+                    <br>
+                    <label for="Whatsapp">
+                        <h2>
+                            Whatsapp
+                        </h2>
+                        <br>
+                        <input type="text" id="Whatsapp" placeholder="Whatsapp">
+                    </label>
+                    <br>
+                    <label for="Telefono">
+                        <h2>
+                            Telefono
+                        </h2>
+                        <br>
+                        <input type="text" id="Telefono" placeholder="Telefono">
+                    </label>
+                </div>
+            </div>
+            <br>
+            <button id="registrar" onclick="registrarcontactos()">Registrar</button>
+        </div>
+    </div>
+
+    <!--Modal para editar-->
+    <div id="miModal2" class="modal">
+        <div class="modal-contenido" id="edicion_contenido">
+            
+            
+        </div>
+    </div>
+
+    <main>
+        <section id="administracion-menu">
+            <ul>
+                <li><a href="/administrador">
+                    <span>
+                        Inicio
+                    </span>
+                </a></li>
+                <li><a href="/administrador_productos">
+                    <span>
+                        Productos
+                    </span>
+                </a></li>
+                <li><a href="/administrador_contact">
+                    <span>
+                        <p class="seleccionado">
+                            Contactos
+                        </p>
+                    </span>
+                </a></li>
+                <li><a href="/administrador_content">
+                    <span>
+                        Contenido
+                    </span>
+                </a></li>
+                <li><a href="administrador_user">
+                    <span>
+                        Usuarios
+                    </span>
+                </a></li>
+                <li><a href="/administrador_season">
+                    <span>
+                        Temporadas
+                    </span>
+                </a></li>
+            </ul>
+        </section>
+        <section class="toda_tabla">
+            <section id="administracion-tabla">
+                
+            </section>
+        </section>
+    </main>
+
+    <footer>
+        <div id="menu">
+            <p>
+                Menu
+            </p>
+            <ul>
+                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
+                <li><a href="#ubicacion">Ubicacion</a></li>
+                <li><a href="#productos">Productos</a></li>
+            </ul>
+        </div>
+        <div id="contactos">
+
+        </div>
+        <div id="derechos_reservados">
+            <div>
+                <img src="{{ url_for('static', filename='image/LOGO.png') }}" alt="logo" id="logo">
+                <p>
+                    ®Blancos y confecciones de durango S.A. de C.V.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
