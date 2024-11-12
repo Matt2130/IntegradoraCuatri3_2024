@@ -1777,6 +1777,10 @@ def iniciar_sesion():
     checkbox_checked = True
     return render_template('registro_Inicio.html', checkbox_checked=checkbox_checked)
 
+@app.errorhandler(404)
+def pagina_no_encontrada(error):
+    return render_template('error404.html'), 404
+
 # Inicio del servidor
 if __name__ == '__main__':
     init_db()
