@@ -160,7 +160,7 @@ button:hover{
 
 
 
-@media screen and (min-width:1350px) and (max-width:1400px){
+@media screen and (min-width:1350px){
     .main{
         width: 60vw;
         height: 40vw;
