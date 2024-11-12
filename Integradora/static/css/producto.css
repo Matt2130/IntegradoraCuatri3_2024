@@ -1,0 +1,183 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 95%;
+    background-color: white;
+    padding: 2vh;
+    border-radius: 1rem;
+    box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
+    margin: 2vw;
+}
+
+#spa-imagenes {
+    flex: 1;
+    border: 0.2vw solid #ddd;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2vw;
+    padding: 2vh;
+    height: 50vh;
+    min-width: 20vw;
+}
+#spa-imagenes img{
+    height: 100%;
+    width: auto;
+    border-radius: 1vw;
+}
+#spa-imagenes::before {
+    content: "Subir imagen";
+    color: #aaa;
+    font-size: 1em;
+}
+
+#spa-info {
+    flex: 2;
+    min-width: 35vw;
+}
+
+#spa-info h2 {
+    margin: 0 0 2vh 0;
+    font-size: 1.5em;
+}
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+    border-radius: 15px;
+    margin: 0 8vh 8vh 8vh;
+}
+
+table td {
+    width: 50%;
+    height: 3vw;
+    border: 0.1vw solid #ddd;
+    vertical-align: top;
+}
+
+table .izq {
+    width: 50%;
+    height: 3vw;
+}
+
+table h3 {
+    display: inline-block;
+    font-weight: normal;
+    color: #666;
+    font-size: 1em;
+}
+
+.info-text{
+    display: inline-block;
+    
+}
+
+#descripcion-producto {
+    margin-top: 1vh;
+    font-style: italic;
+    color: #555;
+    font-size: 1em;
+}
+
+#comentarios {
+    margin-top: 2vh;
+    width: 100%;
+}
+
+#nuevo-comentario {
+    width: 40%;
+    height: 20vh;
+    border: 0.1vw solid #ddd;
+    border-radius: 0.5rem;
+    padding: 1vh;
+    margin: 5vh;
+    font-size: 1em;
+    resize: none;
+}
+
+.comentario {
+    margin-top: 1.5vh;
+    margin-left: 8vh;
+    width: 70%;
+    padding: 1vh;
+    border: 0.1vw solid #ddd;
+    border-radius: 0.5rem;
+}
+
+.comentario-usuario p, .comentario-texto p {
+    margin: 0;
+    font-size: 1em;
+}
+
+.comentario-usuario p {
+    font-weight: bold;
+    color: #333;
+}
+
+.comentario-texto p {
+    color: #555;
+}
+
+/* Media Queries para adaptabilidad */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #spa-imagenes {
+        margin-right: 0;
+        margin-bottom: 2vh;
+        width: 100%;
+        height: 25vh;
+    }
+
+    #spa-info {
+        width: 100%;
+    }
+
+    table td {
+        padding: 0.8vh;
+    }
+
+    #nuevo-comentario {
+        height: 8vh;
+    }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+    #spa-imagenes {
+        height: 20vh;
+        padding: 1vh;
+    }
+
+    #spa-info h2 {
+        font-size: 1.2em;
+        text-align: center;
+    }
+
+    table h3 {
+        font-size: 0.9em;
+    }
+
+    table td {
+        font-size: 0.9em;
+        padding: 0.6vh;
+    }
+
+    #nuevo-comentario {
+        height: 7vh;
+    }
+
+    .comentario {
+        padding: 0.8vh;
+    }
+
+    .comentario-usuario p, .comentario-texto p {
+        font-size: 0.9em;
+    }
+}

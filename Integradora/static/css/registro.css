@@ -1,0 +1,343 @@
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'jost', sans-serif;
+    background-color: #F7F7F7;
+}
+
+.main{
+    width: 60vw;
+    height: 40vw;
+    overflow: hidden;
+    /* background: url("") no-repeat center / cover; */
+    background: #A1A7BC;
+    border-radius: 10px;
+    box-shadow: 5px 20px 50px #000;
+}
+
+#chk{
+    display: none;
+}
+
+.signup{
+    position: relative;
+    width:100%;
+    height: auto;
+}
+
+#atras img{
+    width: 4vw;
+    position: absolute;
+    margin: 1vw 0 0 2vw;
+}
+
+#logo{
+    width: 10vw;
+    justify-content: center;
+    display: flex;
+    margin: .5vw auto;
+}
+
+.signup label{
+    font-size: 1.8em;
+    justify-content: center;
+    display: flex;
+    margin:.5vw;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+.login label{
+    color: #fed800;
+    transform: scale(.6);
+    font-size: 1.8em;
+    justify-content: center;
+    display: flex;
+    margin:4vw;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+.login span{
+    color: #2e2d28;
+    justify-content: center;  
+}
+
+label #icon{
+    color: #fff;
+    font-size: 2.1em;
+    justify-content: center;
+    display: flex;
+    margin:4vw;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+
+input{
+    width: 40%;
+    height: 1vw;
+    background: #e0dede;
+    font-size: .6rem;
+    text-align: center;
+    display: flex;
+    margin: 20px auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button{
+    width: 30%;
+    height: 2vw;
+    margin: .5vw auto;
+    justify-content: center;
+    display: block;
+    color: #fff;
+    background: #2c2c2c;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 20px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: .2s ease-in;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #000;
+}
+
+.login {
+    height: 40vw;
+    background:#eee ;
+    border-radius: 10%;
+    transform: translateY(-8vw);
+    transition: .8s ease-in-out;
+}
+
+.login input{
+    display: none;
+}
+.login button{
+    display: none;
+}
+
+#chk:checked ~ .login{
+    transform: translateY(-32vw);
+}
+
+#chk:checked ~ .login label{
+    transform: scale(1);
+    margin: .5vw;
+    color: black;
+}
+#chk:checked ~ .login span{
+    display: none;
+}
+
+#chk:checked ~ .signup label{
+    transform: scale(.8);
+    border-radius: 15px;
+    background-color: #ebebeb;
+    width: min-content;
+    padding: 0 1vw;
+    margin: 0 auto; 
+}
+
+#chk:checked ~ .login input{
+    display: block;
+}
+
+#chk:checked ~ .login button{
+    display: block;
+}
+
+
+
+@media screen and (min-width:1350px) and (max-width:1400px){
+    .main{
+        width: 60vw;
+        height: 40vw;
+        overflow: hidden;
+    }
+    .login {
+        height: 40vw;
+        transform: translateY(-2vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 40%;
+        height: 1vw;
+        background: #e0dede;
+        font-size: .9rem;
+        text-align: center;
+        display: flex;
+        margin: 20px auto;
+        padding: .5vw;
+        border: none;
+        border-radius: 5px;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-24vw);
+    }
+}
+
+@media screen and (min-width:740px) and (max-width:1350px){
+    .main{
+        width: 60vw;
+        height: 45vw;
+        overflow: hidden;
+    }
+    
+    .login {
+        height: 40vw;
+        transform: translateY(.5vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 40%;
+        height: 1.5vw;
+        font-size: .9rem;
+        margin: 1vw auto;
+        padding: .5vw;
+    }
+    button{
+        width: 30%;
+        height: 3vw;
+        margin: 1vw auto;
+        font-size: 1em;
+        margin-top: 1vw;
+    }
+    .login label{
+        font-size: 1.8em;
+        margin:1vw;
+        transition: .5s ease-in-out;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-26vw);
+    }
+}
+@media screen and (min-width:490px) and (max-width:740px){
+    .main{
+        width: 70%;
+        height: 55vw;
+        overflow: hidden;
+    }
+    
+    .login {
+        height: 40vw;
+        transform: translateY(.5vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 50%;
+        height: 2vw;
+        font-size: .9rem;
+        margin: 1.5vw auto;
+        padding: .5vw;
+    }
+    button{
+        width: 30%;
+        height: 3.5vw;
+        margin: 1vw auto;
+        font-size: 1em;
+        margin-top: 1vw;
+    }
+    .login label{
+        font-size: 1.5em;
+        display: inline-block;
+        margin: 0 auto;
+    }
+    #chk:checked ~ .login label{
+        transform: scale(1);
+        display: block;
+        margin: .5vw auto;
+        justify-content: center;
+        display: flex;
+        margin:4vw;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-35vw);
+        height: 60vw;
+        margin: 0 auto;
+    }
+    .login button{
+        width: max-content;
+    }
+}
+
+@media screen and (max-width:490px){
+    .main{
+        width: 70vw;
+        height: 100vw;
+        overflow: hidden;
+    }
+    #logo{
+        width: 20vw;
+    }
+
+    #atras img{
+        width: 6vw;
+    }
+    
+    .login {
+        width: 90%;
+        height: 40vw;
+        margin: 0 auto;
+        transform: translateY(1vw);
+        transition: .8s ease-in-out;
+    }
+    input{
+        width: 80%;
+        height: 4vw;
+        font-size: .9rem;
+        margin: 3vw auto;
+        padding: .5vw;
+    }
+    button{
+        width: max-content;
+        height: 6vw;
+        margin: 1vw auto;
+        font-size: 1em;
+        margin-top: 1vw;
+    }
+    .login label{
+        font-size: 1.2em;
+        display: inline-block;
+        margin: 0 auto;
+        
+    }
+    #chk:checked ~ .login label{
+        transform: scale(1);
+        display: block;
+        margin: .5vw auto;
+        justify-content: center;
+        display: flex;
+        margin:4vw;
+    }
+    #chk:checked ~ .login{
+        transform: translateY(-60vw);
+        width: 90%;
+        height: 60vw;
+        margin: 0 auto;
+    }
+    .login button{
+        width: max-content;
+    }
+
+}
+/*  0 320 360 portrait
+    480 640 768 landscape
+    1024 1200 1400 no hd
+    1920 hd 
+    
+    @media screen and (min-width:1024px) and (max-width:1400px)
+    @media screen and (min-width:480px) and (max-width:768px) and (orientation:landscape)
+    @media screen and (min-width:320px) and (max-width:480px) and (orientation:portrait)
+*/
