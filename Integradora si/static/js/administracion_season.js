@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/tabla_season_specification')
+    cargarProductos(1);  // Cargar la primera página de la tabla
+});
+
+// Función para cargar productos de una página específica
+function cargarProductos(page) {
+    fetch('/api/tabla_season_specification?page=' + page)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la red: ' + response.statusText);
@@ -7,10 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.text();
         })
         .then(data => {
+            // Actualizar el contenido de la tabla
             document.getElementById('administracion-tabla').innerHTML = data;
         })
         .catch(error => console.error('Error:', error));
-    });
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////    
 function eliminarProducto(param) {
     const confirmacion = confirm("¿Estás seguro de que deseas eliminar este usuario? (Ya no sera reversible esta operación)");

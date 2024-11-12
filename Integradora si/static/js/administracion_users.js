@@ -136,3 +136,63 @@ window.onclick = function(event) {
         cerrarModal();
     }
 }
+
+//Modal para detalles
+function detalleProductos(id) {
+    var modal = document.getElementById("miModal2");
+    modal.style.display = "block"; // Muestra el modal
+
+    fetch('/api/buscador_users_detalles', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.text(); // Cambiado a text() para manejar HTML
+    })
+    .then(html => {
+        // Inserta el HTML en el modal
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('miModal2').querySelector('.modal-contenido').innerText = 'Error en la edición';
+    });
+}
+//Actualizacion
+function editarsqlcontenido(idw){
+    const rol = document.getElementById('rol').value;
+    const estado = document.getElementById('estado').value;
+    const id = idw;
+
+    fetch('/actualizar_user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            rol: rol,
+            estado: estado,
+            id:id
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message); 
+        window.location.href = '/administrador_user';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Error al registrar: " + error.message);
+    });
+}

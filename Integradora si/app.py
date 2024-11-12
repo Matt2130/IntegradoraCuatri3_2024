@@ -196,19 +196,36 @@ def tabla_productos():
         return Response("Error 404", mimetype='text/html')
 
 @app.route('/api/tabla_season_specification')
-def tabla_season_specification	():
+def tabla_season_specification():
+    # Obtener el número de página de los parámetros de la URL (por defecto es 1)
+    page = int(request.args.get('page', 1))
+    limit = 2  # Número de elementos por página
+    offset = (page - 1) * limit  # Calcular el desplazamiento para la consulta
+
     try:
         init_db()
         with engine.connect() as connection:
-            result = connection.execute(text('SELECT season_specification.season, season_specification.Id_season FROM season_specification;'))
+            # Consulta SQL con LIMIT y OFFSET para aplicar la paginación
+            result = connection.execute(text('''
+                SELECT season_specification.season, season_specification.Id_season
+                FROM season_specification
+                LIMIT :limit OFFSET :offset;
+            '''), {"limit": limit, "offset": offset})
+
             contenido = result.fetchall()
-            
+
+            # Contar el total de registros para calcular el número total de páginas
+            result_count = connection.execute(text('SELECT COUNT(*) FROM season_specification'))
+            total_seasons = result_count.scalar()  # Obtiene el número total de registros
+            total_pages = (total_seasons + limit - 1) // limit  # Calcula el total de páginas
+
+            # Generar el HTML para la tabla
             html = """
             <table>
                 <thead>
                     <tr>
                         <th>Temporada</th>
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -222,16 +239,25 @@ def tabla_season_specification	():
                             <button onclick="eliminarProducto({info[1]})" class="eliminar">Eliminar</button>
                         </td>
                     </tr>
-                    
                 """
-
             html += """
                 </tbody>
             </table>
             """
-            
+
+            # Agregar los enlaces de paginación
+            html += f"""
+                <div class="paginacion">
+                    <a href="#" onclick="cargarProductos({page-1})" {"style='pointer-events: none;'" if page == 1 else ""}>Anterior</a>
+                    <a href="#" onclick="cargarProductos({page+1})" {"style='pointer-events: none;'" if page == total_pages else ""}>Siguiente</a>
+                </div>
+            """
+
+            # Solo devolver el HTML de la tabla y la paginación
             return Response(html, mimetype='text/html')
-    except:
+
+    except Exception as e:
+        print(f"Error: {e}")
         return Response("Error 404", mimetype='text/html')
 
 @app.route('/api/tabla_contact')
@@ -366,7 +392,8 @@ def tabla_users():
                         <td>{info[4]}</td>
                         <td>{info[5]}</td>
                         <td>
-                            <button onclick="editarProducto({info[6]})" class="editar">Editar/Más detalles</button>
+                            <button onclick="detalleProductos({info[6]})" class="detalles">Detalles</button>
+                            <button onclick="editarProducto({info[6]})" class="editar">Editar</button>
                             <button onclick="eliminarProducto({info[6]})" class="eliminar">Eliminar</button>
                         </td>
                     </tr>
@@ -444,27 +471,43 @@ def buscador_content():
 
 @app.route('/api/buscador_season', methods=['POST'])
 def buscador_season():
+    # Obtener el término de búsqueda desde el cuerpo de la solicitud
     informacion = request.get_json()
     buscar = informacion.get('buscar', '')
+    
+    # Obtener el número de página de los parámetros de la URL (por defecto es 1)
+    page = int(request.args.get('page', 1))
+    limit = 2  # Número de elementos por página
+    offset = (page - 1) * limit  # Calcular el desplazamiento para la consulta
 
     try:
         init_db()
         with engine.connect() as connection:
-            
+            # Consulta SQL con filtro LIKE y paginación (LIMIT y OFFSET)
             sql_query = """
-                SELECT season_specification.season, season_specification.Id_season FROM season_specification 
-                WHERE season_specification.season LIKE :buscar;
+                SELECT season_specification.season, season_specification.Id_season
+                FROM season_specification
+                WHERE season_specification.season LIKE :buscar
+                LIMIT :limit OFFSET :offset;
             """
-            result = connection.execute(text(sql_query), {"buscar": f"%{buscar}%"})
+            result = connection.execute(text(sql_query), {"buscar": f"%{buscar}%", "limit": limit, "offset": offset})
             contenido = result.fetchall()
 
-            # Construcción de la tabla HTML con los resultados
+            # Contar el total de registros que coinciden con la búsqueda para calcular el número total de páginas
+            result_count = connection.execute(text('''
+                SELECT COUNT(*) FROM season_specification 
+                WHERE season_specification.season LIKE :buscar
+            '''), {"buscar": f"%{buscar}%"})
+            total_seasons = result_count.scalar()  # Obtiene el número total de registros
+            total_pages = (total_seasons + limit - 1) // limit  # Calcula el total de páginas
+
+            # Generar el HTML para la tabla
             html = """
             <table>
                 <thead>
                     <tr>
                         <th>Temporada</th>
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -478,17 +521,25 @@ def buscador_season():
                             <button onclick="eliminarProducto({info[1]})" class="eliminar">Eliminar</button>
                         </td>
                     </tr>
-                    
                 """
-
             html += """
                 </tbody>
             </table>
             """
-            
+
+            # Agregar los enlaces de paginación
+            html += f"""
+                <div class="paginacion">
+                    <a href="#" onclick="cargarProductos({page-1})" {"style='pointer-events: none;'" if page == 1 else ""}>Anterior</a>
+                    <a href="#" onclick="cargarProductos({page+1})" {"style='pointer-events: none;'" if page == total_pages else ""}>Siguiente</a>
+                </div>
+            """
+
+            # Solo devolver el HTML de la tabla y la paginación
             return Response(html, mimetype='text/html')
+
     except Exception as e:
-        print(f"Error en la consulta: {e}")
+        print(f"Error: {e}")
         return Response("Error 404", mimetype='text/html')
 
 @app.route('/api/buscador_users', methods=['POST'])
@@ -1392,6 +1443,54 @@ def buscador_producto_dettalles():
         print(f"Error en la consulta: {e}")
         return Response("Error 404", mimetype='text/html')
 
+@app.route('/api/buscador_users_detalles', methods=['POST'])
+def buscador_users_detalles():
+    informacion = request.get_json()
+    id_contenido = informacion.get('id')
+
+    try:
+        init_db()
+        with engine.connect() as connection:
+            sql_query = """
+                SELECT users.User, users.Email, users.Name, users.Surname, users.Lastname, users.Rol, users.Estado, users.Id_user FROM users WHERE users.Id_user=:id;
+            """
+            result = connection.execute(text(sql_query), {"id": id_contenido})
+            contenido = result.fetchone()
+
+            if contenido is None:
+                return Response("No se encontró contenido", mimetype='text/html')
+
+            html = f"""
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h1>Datos del usuario</h1>
+            <h2>Usuario</h2>
+            <p>{contenido[0]}</p>
+            <br>
+            <h2>Email</h2>
+            <p>{contenido[1]}</p>
+            <br>
+            <h2>Nombre</h2>
+            <p>{contenido[2]}</p>
+            <br>
+            <h2>Apellido paterno</h2>
+            <p>{contenido[3]}</p>
+            <br>
+            <h2>Apellido materno</h2>
+            <p>{contenido[4]}</p>
+            <br>
+            <h2>Rol</h2>
+            <p>{contenido[5]}</p>
+            <br>
+            <h2>Estado</h2>
+            <p>{contenido[6]}</p>   
+            <br>
+            """
+            
+            return Response(html, mimetype='text/html')
+    except Exception as e:
+        print(f"Error en la consulta: {e}")
+        return Response("Error 404", mimetype='text/html')
+    
 #Actualizar datos
 @app.route('/actualizar_contenido', methods=['POST'])
 def actualizar_contenido():

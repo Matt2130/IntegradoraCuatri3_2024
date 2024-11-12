@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //Registrar
 function registrarproducto() {
-    console.log(234567890);
+    //console.log(234567890);
 
     // Obtén los datos
     const image = document.getElementById('image').files[0];
@@ -222,4 +222,52 @@ window.onclick = function(event) {
     if (event.target === modal) {
         cerrarModal();
     }
+}
+
+//Actualizacion
+function editarsqlcontenido(idw){
+    const id = idw;
+
+    // Obtén los datos
+    const image = document.getElementById('imaged').files[0];
+    const modelo = document.getElementById('modelod').value;
+    const temporada = document.getElementById('temporadad').value;
+    const tamaño = document.getElementById('tamañod').value;
+    const nombre = document.getElementById('nombred').value;
+    const descripcion = document.getElementById('descripciond').value;
+    const precio_lot = document.getElementById('precio_lotd').value;
+    const color = document.getElementById('colord').value;
+    const materia = document.getElementById('materiad').value;
+
+    //Creae un FormData
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('modelo', modelo);
+    formData.append('temporada', temporada);
+    formData.append('tamaño', tamaño);
+    formData.append('nombre', nombre);
+    formData.append('descripcion', descripcion);
+    formData.append('precio_lot', precio_lot);
+    formData.append('color', color);
+    formData.append('materia', materia);
+    formData.append('id', id);
+
+    fetch('/actualizar_user', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message); 
+        window.location.href = '/administrador_productos';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Error al registrar: " + error.message);
+    });
 }
