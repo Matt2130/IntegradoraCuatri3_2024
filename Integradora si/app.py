@@ -1652,7 +1652,7 @@ def login():
                 session['permiso_usuario'] = result[0]
                 session['id_usuario'] = result[1]
                 session['usuario_usuario'] = result[2]
-                
+
                 # Redirige según el rol
                 if session['permiso_usuario'] == 'administrador':
                     return jsonify({"redirect": "/administrador"})
@@ -1669,7 +1669,8 @@ def login():
 @app.route('/logout', methods=['POST'])
 def logout():
     session.clear()
-    
+
+    sesion_activa = ""
     # Redirigir a la página de inicio o a donde desees
     return jsonify({"redirect": "/"}) # Redirige a la página principal
 
@@ -1765,8 +1766,8 @@ def producto():
                 """
         result = connection.execute(text(sql_query), {"id": id_producto})
         contenido = result.fetchone()
-    
-    return render_template('producto.html',cont=contenido )
+    #print(sesion_activa)
+    return render_template('producto.html',cont=contenido)
 
 @app.route('/inicio_usuario')
 def inicio_usuario():

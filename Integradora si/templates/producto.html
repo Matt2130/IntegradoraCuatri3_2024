@@ -19,13 +19,15 @@
         </label>
         <nav id="menu">
             <ul>
-                <li><a href="#contactos">Contactos</a></li>
-                <li><a href="#acercadenosotros">Acerca de nosotros</a></li>
-                <li><a href="#ubicacion">Ubicacion</a></li>
-                <li><a href="#productos">Productos</a></li>
+                <li><a href="/">inicio</a></li>
             </ul>
-            <button id="iniciar" onclick="window.location.href='/inicio_usuario'">Iniciar sesión</button>
-            <button id="registrarse" onclick="window.location.href='/inicio_usuario'">Registrarse</button>
+            {% if inicio_secion %}
+                <button id="salir">Cerrar sesión</button>
+            {% else %}
+                <button id="iniciar" onclick="window.location.href='/inicio_usuario'">Iniciar sesión</button>
+                <button id="registrarse" onclick="window.location.href='/inicio_usuario'">Registrarse</button>
+            {% endif %}
+            <p>Estado de la sesión: {{ inicio_secion }}</p>
         </nav>
     </header>
     <main>
