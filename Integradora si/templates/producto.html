@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
     <script src="{{ url_for('static', filename='js/footer.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </head>
 <body>
     <header id="header">
@@ -33,25 +31,53 @@
     <main>
         <div class="container">
             <div id="spa-imagenes">
-                k
+                <img src="{{ url_for('static', filename='image/imagenes_productos/' + cont.url_imagen) }}" alt="{{ cont.Name}}">
             </div>
             <div id="spa-info">
                 <h2 id="nombre-producto"></h2>
                 <table>
                     <tr>
-                        <td class="izq"><h3>Material:</h3><div id="material-producto"></div></td>
-                        <td class="der"><h3>Modelo:</h3><div id="modelo-producto"></div></td>
+                        <td>
+                            <h3>Nombre:</h3>
+                            <p>{{ cont.Name }}</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="izq"><h3>Color:</h3><div class="info-text"  id="color-producto"></div></td>
-                        <td class="der"><h3>Tamaño:</h3><div class="info-text" id="tamaño-producto"></div></td>
+                        <td class="izq"><h3>Material:</h3>
+                            <p>
+                                {{ cont.Material_composition }}
+                            </p><div id="material-producto"></div></td>
+                        <td class="der"><h3>Modelo:</h3>
+                            <p>
+                                {{ cont.Model }}
+                            </p><div id="modelo-producto"></div></td>
                     </tr>
                     <tr>
-                        <td class="izq"><h3>Temporada:</h3><div class="info-text" id="temporada-producto"></div></td>
-                        <td class="der"><h3>Precio:</h3><div class="info-text" id="precio-producto"></div></td>
+                        <td class="izq"><h3>Color:</h3>
+                            <p>
+                                {{ cont.Color }}
+                            </p>
+                            <div class="info-text"  id="color-producto"></div></td>
+                        <td class="der"><h3>Tamaño:</h3>
+                            <p>
+                                {{ cont.Size }}
+                            </p><div class="info-text" id="tamaño-producto"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><h3>Descripción:</h3><div class="info-text" id="descripcion-producto"></div></td>
+                        <td class="izq"><h3>Temporada:</h3>
+                            <p>
+                                {{ cont.season }}
+                            </p><div class="info-text" id="temporada-producto"></div></td>
+                        <td class="der"><h3>Precio:</h3>
+                            <p>
+                                ${{ cont.Price_per_unit }}
+                            </p><div class="info-text" id="precio-producto"></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><h3>Descripción:</h3>
+                            <p>
+                                {{ cont.Description }}
+                            </p><div class="info-text" id="descripcion-producto"></div></td>
                     </tr>
                 </table>
             </div>

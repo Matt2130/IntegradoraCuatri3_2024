@@ -18,10 +18,14 @@
     justify-content: center;
     margin-right: 2vw;
     padding: 2vh;
-    height: 30vh;
+    height: 50vh;
     min-width: 20vw;
 }
-
+#spa-imagenes img{
+    height: 100%;
+    width: auto;
+    border-radius: 1vw;
+}
 #spa-imagenes::before {
     content: "Subir imagen";
     color: #aaa;

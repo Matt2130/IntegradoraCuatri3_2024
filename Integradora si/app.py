@@ -118,7 +118,7 @@ def mostrador_productos():
     try:
         init_db()
         with engine.connect() as connection:
-            result = connection.execute(text('SELECT products.url_imagen, products.Name, products.Color, products.Price_per_unit FROM products;'))
+            result = connection.execute(text('SELECT products.url_imagen, products.Name, products.Color, products.Price_per_unit, products.Id_product FROM products;'))
             contenido = result.fetchall()
             
             html = ""
@@ -127,7 +127,7 @@ def mostrador_productos():
                 direccion_imagen= url_for('static', filename=f'image/imagenes_productos/{info[0]}', _external=True)
                 html += f"""
                         <div class="producto">
-                            <a href="">
+                            <a href="/producto?id={info[4]}">
                                 <div id="imagen">
                                     <img src="{direccion_imagen}" alt="{info[0]}">
                                 </div>
@@ -1657,9 +1657,17 @@ def cliente():
 def catalogo():
     return render_template('catalogo.html')
 
-@app.route('/producto')
+@app.route('/producto', methods=['GET'])
 def producto():
-    return render_template('producto.html')
+    id_producto = request.args.get('id')
+    with engine.connect() as connection:
+        sql_query = """
+                    SELECT products.Material_composition, products.Model, season_specification.season, products.Size, products.Name, products.Description, products.Price_per_unit, products.Color, products.url_imagen, users.User, products.Id_product FROM products INNER JOIN season_specification ON products.FK_id_season=season_specification.Id_season INNER JOIN users ON products.FK_Id_user=users.Id_user WHERE products.Id_product=:id;
+                """
+        result = connection.execute(text(sql_query), {"id": id_producto})
+        contenido = result.fetchone()
+    
+    return render_template('producto.html',cont=contenido )
 
 @app.route('/inicio_usuario')
 def inicio_usuario():
